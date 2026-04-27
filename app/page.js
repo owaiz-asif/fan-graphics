@@ -137,7 +137,7 @@ function Navbar({ currentPage, setCurrentPage, user, cart, onLogout, activeBrand
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b shadow-sm" style={{borderColor: theme.lightBorder}}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentPage(user ? 'home' : 'landing')}>
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentPage(user?.role === 'admin' ? 'admin' : user ? 'home' : 'landing')}>
             <img src={theme.logo} alt={theme.name} className="h-10 w-10 rounded-lg object-contain" style={{background: '#000'}} />
             <div className="hidden sm:block">
               <h1 className="text-base font-bold leading-tight" style={{color: theme.primary}}>{theme.name}</h1>
@@ -146,15 +146,19 @@ function Navbar({ currentPage, setCurrentPage, user, cart, onLogout, activeBrand
           </div>
 
           <div className="hidden md:flex items-center gap-1">
-            {user ? (
+            {user && user.role === 'admin' ? (
+              <Button variant="ghost" size="sm" onClick={() => setCurrentPage('admin')} className={currentPage === 'admin' ? 'font-semibold' : ''} style={currentPage === 'admin' ? {color: theme.primary, background: theme.lightBg} : {}}><LayoutDashboard className="h-4 w-4 mr-1" />Dashboard</Button>
+            ) : user ? (
               <>
                 <Button variant="ghost" size="sm" onClick={() => setCurrentPage('home')} className={currentPage === 'home' ? 'font-semibold' : ''} style={currentPage === 'home' ? {color: theme.primary, background: theme.lightBg} : {}}>Home</Button>
                 <Button variant="ghost" size="sm" onClick={() => setCurrentPage('orders')} className={currentPage === 'orders' ? 'font-semibold' : ''} style={currentPage === 'orders' ? {color: theme.primary, background: theme.lightBg} : {}}>My Orders</Button>
               </>
             ) : null}
-            <Button variant="ghost" size="sm" onClick={() => setCurrentPage('about')}>About</Button>
-            <Button variant="ghost" size="sm" onClick={() => setCurrentPage('contact')}>Contact</Button>
-            <Button variant="outline" size="sm" className="ml-2 flex items-center gap-1.5" onClick={() => { setActiveBrand(otherBrand); setCurrentPage('landing') }}>
+            {(!user || user.role !== 'admin') && <>
+              <Button variant="ghost" size="sm" onClick={() => setCurrentPage('about')}>About</Button>
+              <Button variant="ghost" size="sm" onClick={() => setCurrentPage('contact')}>Contact</Button>
+            </>}
+            <Button variant="outline" size="sm" className="ml-2 flex items-center gap-1.5" onClick={() => { setActiveBrand(otherBrand); setCurrentPage(user?.role === 'admin' ? 'admin' : 'landing') }}>
               <ArrowLeftRight className="h-3.5 w-3.5" />
               <img src={otherTheme.logo} className="h-5 w-5 rounded object-contain" style={{background:'#000'}} />
               <span className="text-xs hidden lg:inline">{otherTheme.name}</span>
@@ -187,10 +191,16 @@ function Navbar({ currentPage, setCurrentPage, user, cart, onLogout, activeBrand
         {menuOpen && (
           <div className="md:hidden py-3 border-t animate-fadeIn" style={{borderColor: theme.lightBorder}}>
             <div className="flex flex-col gap-1">
-              {user && <><Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('home'); setMenuOpen(false) }}>Home</Button><Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('orders'); setMenuOpen(false) }}>My Orders</Button></>}
-              <Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('about'); setMenuOpen(false) }}>About</Button>
-              <Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('contact'); setMenuOpen(false) }}>Contact</Button>
-              <Button variant="ghost" className="justify-start" onClick={() => { setActiveBrand(otherBrand); setCurrentPage('landing'); setMenuOpen(false) }}><ArrowLeftRight className="h-4 w-4 mr-2" />Switch to {otherTheme.name}</Button>
+              {user && user.role === 'admin' ? (
+                <Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('admin'); setMenuOpen(false) }}><LayoutDashboard className="h-4 w-4 mr-2" />Dashboard</Button>
+              ) : user ? (
+                <><Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('home'); setMenuOpen(false) }}>Home</Button><Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('orders'); setMenuOpen(false) }}>My Orders</Button></>
+              ) : null}
+              {(!user || user.role !== 'admin') && <>
+                <Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('about'); setMenuOpen(false) }}>About</Button>
+                <Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('contact'); setMenuOpen(false) }}>Contact</Button>
+              </>}
+              <Button variant="ghost" className="justify-start" onClick={() => { setActiveBrand(otherBrand); setCurrentPage(user?.role === 'admin' ? 'admin' : 'landing'); setMenuOpen(false) }}><ArrowLeftRight className="h-4 w-4 mr-2" />Switch to {otherTheme.name}</Button>
               {user ? <Button variant="ghost" className="justify-start text-red-500" onClick={() => { onLogout(); setMenuOpen(false) }}>Logout</Button> : <><Button variant="ghost" className="justify-start" onClick={() => { setCurrentPage('login'); setMenuOpen(false) }}>Login</Button><Button variant="ghost" className="justify-start" style={{color: theme.primary}} onClick={() => { setCurrentPage('register'); setMenuOpen(false) }}>Register</Button></>}
             </div>
           </div>
@@ -716,7 +726,7 @@ function AdminDashboard({ token, theme }) {
           {orders.length===0?<p className="text-center text-gray-500 py-8">No orders</p>:
           <div className="space-y-4">{orders.map(o=>(
             <Card key={o.id}><CardContent className="p-4">
-              <div className="flex flex-wrap items-start justify-between gap-3 mb-3"><div><p className="font-semibold">Order #{o.id.slice(0,8)}</p><p className="text-sm text-gray-500">{o.user_name} | {o.user_phone}</p><p className="text-xs text-gray-400">{new Date(o.created_at).toLocaleString('en-IN')}</p></div>
+              <div className="flex flex-wrap items-start justify-between gap-3 mb-3"><div><p className="font-semibold">Order #{o.id.slice(0,8)}</p><p className="text-sm text-gray-500">{o.user_name} | <a href={`https://wa.me/91${o.user_phone?.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" className="text-green-600 hover:underline inline-flex items-center gap-1"><MessageCircle className="h-3.5 w-3.5" />{o.user_phone}</a></p><p className="text-xs text-gray-400">{new Date(o.created_at).toLocaleString('en-IN')}</p></div>
               <select className="h-9 rounded-md border px-3 text-sm" value={o.status} onChange={e=>updateOrder(o.id,e.target.value)}><option>Pending</option><option>Confirmed</option><option>Processing</option><option>Delivered</option><option>Cancelled</option></select></div>
               <div className="text-sm space-y-1">{o.products?.map((p,i)=><div key={i} className="flex justify-between"><span>{p.product_name} x{p.quantity}</span><span>Rs. {(p.price*p.quantity).toLocaleString('en-IN')}</span></div>)}</div>
               <Separator className="my-2" /><div className="flex justify-between font-bold text-sm"><span>Total:</span><span>Rs. {o.total_price?.toLocaleString('en-IN',{minimumFractionDigits:2})}</span></div><p className="text-xs text-gray-400 mt-1">Txn: {o.transaction_id}</p>
