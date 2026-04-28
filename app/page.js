@@ -20,8 +20,9 @@ import {
 } from 'lucide-react'
 
 const AFN_LOGO = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/edw1si2v_AFN%20New%20Logo.png'
-const CRAZZY_LOGO = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/q1y3enx9_Crazy%20Gifts.png'
+const CRAZZY_LOGO = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/rivzvsxn_Crazy%20Gifts.png'
 const QR_URL = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/ezps4j9i_WhatsApp%20Image%202026-04-21%20at%2006.18.34.jpeg'
+const AFN_HERO_BG = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/we7n5094_WhatsApp%20Image%202026-04-27%20at%2011.27.05.jpeg'
 const PHONE_NO = '+91 63607 72095'
 
 const BRAND_CONFIG = {
@@ -95,29 +96,37 @@ const api = {
 function BrandSelector({ onSelect }) {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-20" style={{background: 'radial-gradient(ellipse at 30% 50%, #7c3aed33, transparent 50%), radial-gradient(ellipse at 70% 50%, #0d948833, transparent 50%)'}} />
+      <div className="absolute inset-0 opacity-10" style={{backgroundImage: `url(${AFN_HERO_BG})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px)'}} />
       <div className="relative z-10 max-w-5xl w-full">
         <h1 className="text-center text-white text-3xl md:text-5xl font-bold mb-3">Welcome</h1>
         <p className="text-center text-gray-400 mb-12 text-lg">Choose your destination</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
           {/* AFN Graphics */}
           <div onClick={() => onSelect('afn_graphics')} className="cursor-pointer group">
-            <div className="rounded-3xl p-8 md:p-10 text-center border-2 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl" style={{background: 'linear-gradient(135deg, #1a0a2e, #2d0a3e)', borderColor: 'rgba(233,30,140,0.3)', boxShadow: '0 0 0px rgba(233,30,140,0)'}}  onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 40px rgba(233,30,140,0.3)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(233,30,140,0)'}>
-              <img src={AFN_LOGO} alt="AFN Graphics" className="h-36 w-36 mx-auto mb-6 rounded-2xl object-contain" />
-              <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{color: '#e91e8c'}}>AFN Graphics</h2>
-              <p className="text-purple-300 mb-4">A Unique Designing Solutions</p>
-              <p className="text-pink-400 italic text-sm">"You Dream it... We Design it!!!"</p>
-              <div className="mt-6 inline-flex items-center gap-2 px-6 py-2 rounded-full text-sm font-medium" style={{background: 'rgba(233,30,140,0.15)', color: '#e91e8c'}}>Enter Store <ChevronRight className="h-4 w-4" /></div>
+            <div className="rounded-3xl text-center border-2 transition-all duration-500 group-hover:scale-[1.03] overflow-hidden relative" style={{borderColor: 'rgba(233,30,140,0.3)', boxShadow: '0 0 0px rgba(233,30,140,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 50px rgba(233,30,140,0.4)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(233,30,140,0)'}>
+              <div className="absolute inset-0"><img src={AFN_HERO_BG} alt="" className="w-full h-full object-cover" /></div>
+              <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(26,10,46,0.85))'}} />
+              <div className="relative p-8 md:p-10">
+                <img src={AFN_LOGO} alt="AFN Graphics" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain" style={{background: 'rgba(0,0,0,0.6)', border: '2px solid rgba(233,30,140,0.3)', boxShadow: '0 0 25px rgba(233,30,140,0.2)'}} />
+                <h2 className="text-3xl md:text-4xl font-black mb-2" style={{color: '#e91e8c', textShadow: '0 3px 15px rgba(233,30,140,0.4), 0 1px 3px rgba(0,0,0,0.8)'}}>AFN Graphics</h2>
+                <p className="text-purple-300 mb-3 font-light tracking-wider">a unique designing solutions</p>
+                <p className="text-pink-300 italic text-sm mb-6" style={{textShadow: '0 1px 5px rgba(0,0,0,0.8)'}}>\"You Dream it... We Design it!!!\"</p>
+                <div className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-semibold transition-all group-hover:px-10" style={{background: 'rgba(233,30,140,0.25)', color: '#f9a8d4', border: '1px solid rgba(233,30,140,0.4)'}}>Enter Store <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
+              </div>
             </div>
           </div>
           {/* Crazzy Gifts */}
           <div onClick={() => onSelect('crazzy_gifts')} className="cursor-pointer group">
-            <div className="rounded-3xl p-8 md:p-10 text-center border-2 transition-all duration-500 group-hover:scale-[1.03] group-hover:shadow-2xl" style={{background: 'linear-gradient(135deg, #042f2e, #0a3d3a)', borderColor: 'rgba(45,212,191,0.3)', boxShadow: '0 0 0px rgba(45,212,191,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 40px rgba(45,212,191,0.3)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(45,212,191,0)'}>
-              <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-36 w-36 mx-auto mb-6 rounded-2xl object-contain" />
-              <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{color: '#2dd4bf'}}>Crazzy Gifts World</h2>
-              <p className="text-teal-300 mb-4">A Complete Online Gift Solutions</p>
-              <p className="text-teal-400 italic text-sm">"Ordinary GIFT to Extra-Ordinary PERSON"</p>
-              <div className="mt-6 inline-flex items-center gap-2 px-6 py-2 rounded-full text-sm font-medium" style={{background: 'rgba(45,212,191,0.15)', color: '#2dd4bf'}}>Enter Store <ChevronRight className="h-4 w-4" /></div>
+            <div className="rounded-3xl text-center border-2 transition-all duration-500 group-hover:scale-[1.03] overflow-hidden relative" style={{background: 'linear-gradient(135deg, #000000 0%, #042f2e 50%, #000000 100%)', borderColor: 'rgba(45,212,191,0.3)', boxShadow: '0 0 0px rgba(45,212,191,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 50px rgba(45,212,191,0.4)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(45,212,191,0)'}>
+              <div className="absolute inset-4 border rounded-2xl opacity-15" style={{borderColor: '#2dd4bf'}} />
+              <div className="relative p-8 md:p-10">
+                <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain" style={{background: 'rgba(0,0,0,0.6)', border: '2px solid rgba(45,212,191,0.3)', boxShadow: '0 0 25px rgba(45,212,191,0.2)'}} />
+                <h2 className="text-3xl md:text-4xl font-black mb-1" style={{fontFamily: 'Playfair Display, serif', color: '#2dd4bf', textShadow: '0 3px 0 #064e45, 0 6px 12px rgba(0,0,0,0.8), 0 0 30px rgba(45,212,191,0.3)'}}>Crazzy Gifts</h2>
+                <h3 className="text-2xl md:text-3xl font-black mb-3" style={{fontFamily: 'Playfair Display, serif', color: '#99f6e4', textShadow: '0 2px 0 #0d9488, 0 4px 10px rgba(0,0,0,0.8), 0 0 20px rgba(153,246,228,0.2)'}}>World</h3>
+                <p className="text-teal-300 mb-3 font-light tracking-wider">A Complete Online Gift Solutions...</p>
+                <p className="text-teal-200 italic text-sm mb-6" style={{textShadow: '0 1px 5px rgba(0,0,0,0.8)'}}>\"Ordinary GIFT to Extra-Ordinary PERSON\"</p>
+                <div className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-semibold transition-all group-hover:px-10" style={{background: 'rgba(45,212,191,0.2)', color: '#5eead4', border: '1px solid rgba(45,212,191,0.4)'}}>Enter Store <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
+              </div>
             </div>
           </div>
         </div>
@@ -294,24 +303,61 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
 
   return (
     <div className="animate-fadeIn">
-      <div className="relative overflow-hidden" style={{background: theme.heroBg}}>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
-          <div className="text-center">
-            <img src={theme.logo} alt={theme.name} className="h-28 w-28 mx-auto mb-6 rounded-2xl shadow-2xl object-contain animate-pulse-glow" style={{background: '#000', border: `2px solid ${theme.cardBorder}`}} />
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-3">{theme.name.split(' ').map((w,i) => <span key={i}>{i === 0 ? <span style={{color: theme.primary}}>{w} </span> : w + ' '}</span>)}</h1>
-            <p className="text-lg md:text-xl mb-2 font-medium" style={{color: theme.accent}}>{theme.tagline}</p>
-            <p className="text-2xl md:text-3xl font-bold mb-8 italic" style={{color: theme.heroText}}>{theme.quote}</p>
-            <div className="max-w-xl mx-auto relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <Input placeholder="Search products..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-12 pr-4 h-12 rounded-full bg-white/95 border-0 text-gray-900 text-lg shadow-xl" />
-            </div>
-            <div className="flex flex-wrap justify-center gap-3 mt-8">
-              <Button className="border-white/30 text-white hover:text-white" variant="outline" style={{background: 'rgba(255,255,255,0.1)', borderColor: 'rgba(255,255,255,0.3)'}} onClick={() => setCurrentPage('login')}>Login</Button>
-              <Button className="text-white" style={{background: theme.buttonBg}} onClick={() => setCurrentPage('register')}>Get Started</Button>
+      {/* AFN Graphics Hero - with background image */}
+      {activeBrand === 'afn_graphics' ? (
+        <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
+          <div className="absolute inset-0"><img src={AFN_HERO_BG} alt="" className="w-full h-full object-cover" /></div>
+          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)'}} />
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div className="text-center">
+              <img src={AFN_LOGO} alt="AFN Graphics" className="h-24 w-24 md:h-32 md:w-32 mx-auto mb-6 rounded-2xl object-contain animate-pulse-glow" style={{background: 'rgba(0,0,0,0.7)', border: '2px solid rgba(233,30,140,0.5)', boxShadow: '0 0 30px rgba(233,30,140,0.3)'}} />
+              <h1 className="text-5xl md:text-7xl font-black text-white mb-2" style={{textShadow: '0 4px 20px rgba(233,30,140,0.5), 0 2px 4px rgba(0,0,0,0.8)'}}>
+                <span style={{color: '#e91e8c', textShadow: '0 0 40px rgba(233,30,140,0.6), 0 4px 8px rgba(0,0,0,0.5)'}}>AFN </span>
+                <span style={{textShadow: '0 0 20px rgba(255,255,255,0.3), 0 4px 8px rgba(0,0,0,0.5)'}}>Graphics</span>
+              </h1>
+              <p className="text-xl md:text-2xl mb-3 font-light tracking-wider" style={{color: '#c084fc', textShadow: '0 2px 10px rgba(0,0,0,0.8)'}}>a unique designing solutions</p>
+              <p className="text-2xl md:text-3xl font-bold mb-10 italic" style={{color: '#f9a8d4', textShadow: '0 2px 15px rgba(0,0,0,0.8)'}}>\"You Dream it... We Design it!!!\"</p>
+              <div className="max-w-xl mx-auto relative mb-8">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input placeholder="Search products..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-12 pr-4 h-12 rounded-full bg-white/95 border-0 text-gray-900 text-lg shadow-2xl" />
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button className="border-pink-400/50 text-white hover:text-white hover:border-pink-400 px-8" variant="outline" style={{background: 'rgba(233,30,140,0.2)', borderColor: 'rgba(233,30,140,0.5)', backdropFilter: 'blur(10px)'}} onClick={() => setCurrentPage('login')}>Login</Button>
+                <Button className="text-white px-8 shadow-lg" style={{background: '#e91e8c', boxShadow: '0 4px 20px rgba(233,30,140,0.4)'}} onClick={() => setCurrentPage('register')}>Get Started</Button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        /* Crazzy Gifts World Hero - 3D text style */
+        <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center" style={{background: 'linear-gradient(135deg, #000000 0%, #0a1a18 30%, #042f2e 60%, #000000 100%)'}}>
+          <div className="absolute inset-0 opacity-20" style={{backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(45,212,191,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 30%, rgba(45,212,191,0.1) 0%, transparent 50%), radial-gradient(circle at 50% 80%, rgba(94,234,212,0.08) 0%, transparent 50%)'}} />
+          {/* Teal border frame effect like the logo */}
+          <div className="absolute inset-4 md:inset-8 border-2 rounded-3xl opacity-20" style={{borderColor: '#2dd4bf'}} />
+          <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div className="text-center">
+              <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-28 w-28 md:h-36 md:w-36 mx-auto mb-6 rounded-2xl object-contain animate-pulse-glow" style={{background: 'rgba(0,0,0,0.8)', border: '2px solid rgba(45,212,191,0.4)', boxShadow: '0 0 30px rgba(45,212,191,0.3)'}} />
+              <h1 className="text-5xl md:text-7xl font-black mb-2" style={{fontFamily: 'Playfair Display, serif'}}>
+                <span style={{color: '#2dd4bf', textShadow: '0 4px 0 #0a5c52, 0 8px 0 #064e45, 0 12px 20px rgba(0,0,0,0.8), 0 0 40px rgba(45,212,191,0.3)'}}>Crazzy </span>
+                <span style={{color: '#5eead4', textShadow: '0 4px 0 #0d7a6f, 0 8px 0 #065f55, 0 12px 20px rgba(0,0,0,0.8), 0 0 40px rgba(94,234,212,0.2)'}}>Gifts</span>
+              </h1>
+              <h2 className="text-4xl md:text-5xl font-black mb-4" style={{fontFamily: 'Playfair Display, serif', color: '#99f6e4', textShadow: '0 3px 0 #0d9488, 0 6px 15px rgba(0,0,0,0.8), 0 0 30px rgba(153,246,228,0.2)'}}>World</h2>
+              <p className="text-lg md:text-xl mb-3 italic font-light tracking-wider" style={{color: '#5eead4', textShadow: '0 2px 10px rgba(0,0,0,0.8)'}}>A Complete Online Gift Solutions...</p>
+              <div className="mb-10">\n                <p className="text-xl md:text-2xl font-bold" style={{color: '#ccfbf1', textShadow: '0 2px 8px rgba(0,0,0,0.8)'}}>Ordinary <span className="text-3xl md:text-4xl" style={{color: '#2dd4bf', textShadow: '0 3px 0 #064e45, 0 6px 15px rgba(0,0,0,0.8)'}}>GIFT</span> to</p>
+                <p className="text-xl md:text-2xl font-bold" style={{color: '#ccfbf1', textShadow: '0 2px 8px rgba(0,0,0,0.8)'}}>Extra-Ordinary <span className="text-3xl md:text-4xl" style={{color: '#2dd4bf', textShadow: '0 3px 0 #064e45, 0 6px 15px rgba(0,0,0,0.8)'}}>PERSON</span></p>
+              </div>
+              <div className="max-w-xl mx-auto relative mb-8">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input placeholder="Search gifts..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-12 pr-4 h-12 rounded-full bg-white/95 border-0 text-gray-900 text-lg shadow-2xl" />
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Button className="border-teal-400/50 text-white hover:text-white hover:border-teal-400 px-8" variant="outline" style={{background: 'rgba(45,212,191,0.15)', borderColor: 'rgba(45,212,191,0.5)', backdropFilter: 'blur(10px)'}} onClick={() => setCurrentPage('login')}>Login</Button>
+                <Button className="text-white px-8 shadow-lg" style={{background: '#0d9488', boxShadow: '0 4px 20px rgba(13,148,136,0.4)'}} onClick={() => setCurrentPage('register')}>Get Started</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Horizontal Category Nav */}
       <div className="border-b" style={{borderColor: theme.lightBorder, background: theme.lightBg}}>
