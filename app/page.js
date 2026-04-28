@@ -107,7 +107,7 @@ function BrandSelector({ onSelect }) {
               <div className="absolute inset-0"><img src={AFN_HERO_BG} alt="" className="w-full h-full object-cover" /></div>
               <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(26,10,46,0.85))'}} />
               <div className="relative p-8 md:p-10">
-                <img src={AFN_LOGO} alt="AFN Graphics" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain" style={{background: 'rgba(0,0,0,0.6)', border: '2px solid rgba(233,30,140,0.3)', boxShadow: '0 0 25px rgba(233,30,140,0.2)'}} />
+                <img src={AFN_LOGO} alt="AFN Graphics" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain p-2" style={{background: '#fff', border: '2px solid rgba(233,30,140,0.3)', boxShadow: '0 0 25px rgba(233,30,140,0.2)'}} />
                 <h2 className="text-3xl md:text-4xl font-black mb-2" style={{color: '#e91e8c', textShadow: '0 3px 15px rgba(233,30,140,0.4), 0 1px 3px rgba(0,0,0,0.8)'}}>AFN Graphics</h2>
                 <p className="text-purple-300 mb-3 font-light tracking-wider">a unique designing solutions</p>
                 <p className="text-pink-300 italic text-sm mb-6" style={{textShadow: '0 1px 5px rgba(0,0,0,0.8)'}}>\"You Dream it... We Design it...!!!\"</p>
@@ -120,7 +120,7 @@ function BrandSelector({ onSelect }) {
             <div className="rounded-3xl text-center border-2 transition-all duration-500 group-hover:scale-[1.03] overflow-hidden relative" style={{background: 'linear-gradient(135deg, #000000 0%, #042f2e 50%, #000000 100%)', borderColor: 'rgba(45,212,191,0.3)', boxShadow: '0 0 0px rgba(45,212,191,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 50px rgba(45,212,191,0.4)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(45,212,191,0)'}>
               <div className="absolute inset-4 border rounded-2xl opacity-15" style={{borderColor: '#2dd4bf'}} />
               <div className="relative p-8 md:p-10">
-                <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain" style={{background: 'rgba(0,0,0,0.6)', border: '2px solid rgba(45,212,191,0.3)', boxShadow: '0 0 25px rgba(45,212,191,0.2)'}} />
+                <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain p-2" style={{background: '#fff', border: '2px solid rgba(45,212,191,0.3)', boxShadow: '0 0 25px rgba(45,212,191,0.2)'}} />
                 <h2 className="text-3xl md:text-4xl font-black mb-1" style={{fontFamily: 'Playfair Display, serif', color: '#2dd4bf', textShadow: '0 3px 0 #064e45, 0 6px 12px rgba(0,0,0,0.8), 0 0 30px rgba(45,212,191,0.3)'}}>Crazzy Gifts</h2>
                 <h3 className="text-2xl md:text-3xl font-black mb-3" style={{fontFamily: 'Playfair Display, serif', color: '#99f6e4', textShadow: '0 2px 0 #0d9488, 0 4px 10px rgba(0,0,0,0.8), 0 0 20px rgba(153,246,228,0.2)'}}>World</h3>
                 <p className="text-teal-300 mb-3 font-light tracking-wider">A Complete Online Gift Solutions...</p>
@@ -147,7 +147,7 @@ function Navbar({ currentPage, setCurrentPage, user, cart, onLogout, activeBrand
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setCurrentPage(user?.role === 'admin' ? 'admin' : user ? 'home' : 'landing')}>
-            <img src={theme.logo} alt={theme.name} className="h-10 w-10 rounded-lg object-contain" style={{background: '#000'}} />
+            <img src={theme.logo} alt={theme.name} className="h-10 w-10 rounded-lg object-contain p-0.5" style={{background: '#fff', border: `1.5px solid ${theme.cardBorder}`}} />
             <div className="hidden sm:block">
               <h1 className="text-base font-bold leading-tight" style={{color: theme.primary}}>{theme.name}</h1>
               <p className="text-[10px] font-medium -mt-0.5" style={{color: theme.secondary}}>{theme.tagline}</p>
@@ -169,7 +169,7 @@ function Navbar({ currentPage, setCurrentPage, user, cart, onLogout, activeBrand
             </>}
             <Button variant="outline" size="sm" className="ml-2 flex items-center gap-1.5" onClick={() => { setActiveBrand(otherBrand); setCurrentPage(user?.role === 'admin' ? 'admin' : 'landing') }}>
               <ArrowLeftRight className="h-3.5 w-3.5" />
-              <img src={otherTheme.logo} className="h-5 w-5 rounded object-contain" style={{background:'#000'}} />
+              <img src={otherTheme.logo} className="h-5 w-5 rounded object-contain p-0.5" style={{background:'#fff', border: '1px solid #e5e7eb'}} />
               <span className="text-xs hidden lg:inline">{otherTheme.name}</span>
             </Button>
           </div>
@@ -254,7 +254,7 @@ function Footer({ setCurrentPage, theme, activeBrand }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              <img src={theme.logo} alt={theme.name} className="h-14 w-14 rounded-xl object-contain" style={{background:'#000', border: `1px solid ${theme.cardBorder}`}} />
+              <img src={theme.logo} alt={theme.name} className="h-14 w-14 rounded-xl object-contain p-1" style={{background:'#fff', border: `1px solid ${theme.cardBorder}`}} />
               <div>
                 <h2 className="text-xl font-bold" style={{color: theme.primary}}>{theme.name}</h2>
                 <p className="text-sm" style={{color: theme.accent}}>{theme.tagline}</p>
@@ -283,8 +283,8 @@ function Footer({ setCurrentPage, theme, activeBrand }) {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-gray-500 text-sm">&copy; 2025 {theme.name}. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <img src={AFN_LOGO} alt="AFN" className="h-8 w-8 rounded object-contain opacity-60 hover:opacity-100 transition-opacity cursor-pointer" style={{background:'#000'}} />
-            <img src={CRAZZY_LOGO} alt="Crazzy" className="h-8 w-8 rounded object-contain opacity-60 hover:opacity-100 transition-opacity cursor-pointer" style={{background:'#000'}} />
+            <img src={AFN_LOGO} alt="AFN" className="h-8 w-8 rounded object-contain p-0.5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer" style={{background:'#fff'}} />
+            <img src={CRAZZY_LOGO} alt="Crazzy" className="h-8 w-8 rounded object-contain p-0.5 opacity-60 hover:opacity-100 transition-opacity cursor-pointer" style={{background:'#fff'}} />
           </div>
         </div>
       </div>
@@ -310,7 +310,7 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
           <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%)'}} />
           <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <div className="text-center">
-              <img src={AFN_LOGO} alt="AFN Graphics" className="h-24 w-24 md:h-32 md:w-32 mx-auto mb-6 rounded-2xl object-contain animate-pulse-glow" style={{background: 'rgba(0,0,0,0.7)', border: '2px solid rgba(233,30,140,0.5)', boxShadow: '0 0 30px rgba(233,30,140,0.3)'}} />
+              <img src={AFN_LOGO} alt="AFN Graphics" className="h-24 w-24 md:h-32 md:w-32 mx-auto mb-6 rounded-2xl object-contain p-2 animate-pulse-glow" style={{background: '#fff', border: '2px solid rgba(233,30,140,0.5)', boxShadow: '0 0 30px rgba(233,30,140,0.3)'}} />
               <h1 className="text-5xl md:text-7xl lg:text-8xl mb-3" style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontWeight: 800, letterSpacing: '2px'}}>
                 <span style={{color: '#e91e8c', textShadow: '0 0 60px rgba(233,30,140,0.5), 0 4px 15px rgba(0,0,0,0.7), 2px 2px 0 rgba(124,58,237,0.4)'}}>AFN </span>
                 <span className="text-white" style={{textShadow: '0 0 30px rgba(255,255,255,0.25), 0 4px 15px rgba(0,0,0,0.7), 2px 2px 0 rgba(233,30,140,0.3)'}}>Graphics</span>
@@ -347,7 +347,7 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
           <div className="absolute inset-6 md:inset-10 border rounded-2xl opacity-5" style={{borderColor: '#5eead4'}} />
           <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
             <div className="text-center">
-              <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-28 w-28 md:h-36 md:w-36 mx-auto mb-8 rounded-2xl object-contain animate-pulse-glow" style={{background: 'rgba(0,0,0,0.8)', border: '2px solid rgba(45,212,191,0.4)', boxShadow: '0 0 40px rgba(45,212,191,0.3), 0 0 80px rgba(45,212,191,0.1)'}} />
+              <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-28 w-28 md:h-36 md:w-36 mx-auto mb-8 rounded-2xl object-contain p-2 animate-pulse-glow" style={{background: '#fff', border: '2px solid rgba(45,212,191,0.4)', boxShadow: '0 0 40px rgba(45,212,191,0.3), 0 0 80px rgba(45,212,191,0.1)'}} />
               <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-1 leading-none" style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic'}}>
                 <span style={{color: '#2dd4bf', textShadow: '0 0 80px rgba(45,212,191,0.5), 0 5px 0 #0a5c52, 0 10px 0 #064e45, 0 15px 30px rgba(0,0,0,0.9)'}}>Crazzy</span>
               </h1>
@@ -430,7 +430,7 @@ function LoginPage({ setCurrentPage, onLogin, theme }) {
     <div className="min-h-[80vh] flex items-center justify-center p-4" style={{background: theme.lightBg}}>
       <Card className="w-full max-w-md animate-fadeIn">
         <CardHeader className="text-center">
-          <img src={theme.logo} alt="Logo" className="h-16 w-16 mx-auto mb-2 rounded-xl object-contain" style={{background: '#000'}} />
+          <img src={theme.logo} alt="Logo" className="h-16 w-16 mx-auto mb-2 rounded-xl object-contain p-1" style={{background: '#fff', border: `1px solid ${theme.lightBorder}`}} />
           <CardTitle className="text-2xl">Welcome Back</CardTitle>
           <CardDescription>Login to your account</CardDescription>
         </CardHeader>
@@ -461,7 +461,7 @@ function RegisterPage({ setCurrentPage, onLogin, theme }) {
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4" style={{background: theme.lightBg}}>
       <Card className="w-full max-w-md animate-fadeIn">
-        <CardHeader className="text-center"><img src={theme.logo} alt="Logo" className="h-16 w-16 mx-auto mb-2 rounded-xl object-contain" style={{background: '#000'}} /><CardTitle className="text-2xl">Create Account</CardTitle><CardDescription>Join {theme.name} today</CardDescription></CardHeader>
+        <CardHeader className="text-center"><img src={theme.logo} alt="Logo" className="h-16 w-16 mx-auto mb-2 rounded-xl object-contain p-1" style={{background: '#fff', border: `1px solid ${theme.lightBorder}`}} /><CardTitle className="text-2xl">Create Account</CardTitle><CardDescription>Join {theme.name} today</CardDescription></CardHeader>
         <CardContent>
           <form onSubmit={handleRegister} className="space-y-3">
             <div><Label>Username *</Label><Input placeholder="Choose a unique username" value={form.username} onChange={e => setForm({...form, username: e.target.value})} required /></div>
@@ -762,9 +762,9 @@ function AdminDashboard({ token, theme }) {
         <h1 className="text-2xl font-bold flex items-center gap-2"><LayoutDashboard className="h-6 w-6" style={{color: theme.primary}} />Admin Dashboard</h1>
         <div className="flex items-center gap-2 bg-gray-100 rounded-full p-1">
           <button className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${adminBrand==='afn_graphics' ? 'text-white shadow' : 'text-gray-600'}`} style={adminBrand==='afn_graphics'?{background:'#e91e8c'}:{}} onClick={() => { setAdminBrand('afn_graphics'); setNp(p=>({...p, brand:'afn_graphics'})) }}>
-            <img src={AFN_LOGO} className="inline h-5 w-5 rounded mr-1 object-contain" style={{background:'#000'}} />AFN</button>
+            <img src={AFN_LOGO} className="inline h-5 w-5 rounded mr-1 object-contain p-0.5" style={{background:'#fff'}} />AFN</button>
           <button className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${adminBrand==='crazzy_gifts' ? 'text-white shadow' : 'text-gray-600'}`} style={adminBrand==='crazzy_gifts'?{background:'#0d9488'}:{}} onClick={() => { setAdminBrand('crazzy_gifts'); setNp(p=>({...p, brand:'crazzy_gifts'})) }}>
-            <img src={CRAZZY_LOGO} className="inline h-5 w-5 rounded mr-1 object-contain" style={{background:'#000'}} />Crazzy</button>
+            <img src={CRAZZY_LOGO} className="inline h-5 w-5 rounded mr-1 object-contain p-0.5" style={{background:'#fff'}} />Crazzy</button>
         </div>
       </div>
 
@@ -829,8 +829,8 @@ function AboutPage({ theme }) {
       <div className="py-16" style={{background: theme.heroBg}}>
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-6 mb-6">
-            <img src={AFN_LOGO} alt="AFN" className="h-20 w-20 rounded-2xl shadow-2xl object-contain" style={{background:'#000'}} />
-            <img src={CRAZZY_LOGO} alt="Crazzy" className="h-20 w-20 rounded-2xl shadow-2xl object-contain" style={{background:'#000'}} />
+            <img src={AFN_LOGO} alt="AFN" className="h-20 w-20 rounded-2xl shadow-2xl object-contain p-1.5" style={{background:'#fff'}} />
+            <img src={CRAZZY_LOGO} alt="Crazzy" className="h-20 w-20 rounded-2xl shadow-2xl object-contain p-1.5" style={{background:'#fff'}} />
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">About Us</h1>
           <p style={{color: theme.accent}}>Two brands, One vision of excellence</p>
@@ -839,13 +839,13 @@ function AboutPage({ theme }) {
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           <Card className="border-2" style={{borderColor: 'rgba(233,30,140,0.2)'}}><CardContent className="p-6 text-center">
-            <img src={AFN_LOGO} alt="AFN" className="h-24 w-24 mx-auto mb-4 rounded-xl object-contain" style={{background:'#000'}} />
+            <img src={AFN_LOGO} alt="AFN" className="h-24 w-24 mx-auto mb-4 rounded-xl object-contain p-1.5" style={{background:'#fff', border: '1px solid #fce7f3'}} />
             <h2 className="text-2xl font-bold mb-2" style={{color:'#e91e8c'}}>AFN Graphics</h2>
             <p className="text-purple-600 mb-4">A Unique Designing Solutions</p>
             <p className="text-gray-600 text-sm">Professional graphic design and printing services. From logos to brochures, we create stunning designs that elevate your brand.</p>
           </CardContent></Card>
           <Card className="border-2" style={{borderColor: 'rgba(45,212,191,0.2)'}}><CardContent className="p-6 text-center">
-            <img src={CRAZZY_LOGO} alt="Crazzy" className="h-24 w-24 mx-auto mb-4 rounded-xl object-contain" style={{background:'#000'}} />
+            <img src={CRAZZY_LOGO} alt="Crazzy" className="h-24 w-24 mx-auto mb-4 rounded-xl object-contain p-1.5" style={{background:'#fff', border: '1px solid #ccfbf1'}} />
             <h2 className="text-2xl font-bold mb-2" style={{color:'#2dd4bf'}}>Crazzy Gifts World</h2>
             <p className="text-teal-600 mb-4">A Complete Online Gift Solutions</p>
             <p className="text-gray-600 text-sm">Personalized gifts for every occasion. Custom mugs, t-shirts, photo frames, and more. Make every gift extraordinary!</p>
@@ -878,7 +878,7 @@ function ContactPage({ theme }) {
           <div className="flex items-center gap-4 p-4 rounded-xl" style={{background: theme.lightBg}}><div className="rounded-full p-3" style={{background: theme.buttonBg}}><Phone className="h-6 w-6 text-white" /></div><div><h3 className="font-semibold text-lg">Phone / WhatsApp</h3><p className="font-medium text-lg" style={{color: theme.primary}}>{PHONE_NO}</p></div></div>
           <div className="flex items-center gap-4 p-4 rounded-xl" style={{background: theme.lightBg}}><div className="rounded-full p-3" style={{background: theme.secondary}}><Mail className="h-6 w-6 text-white" /></div><div><h3 className="font-semibold text-lg">Email</h3><p className="font-medium" style={{color: theme.primary}}>afngraphics7867@gmail.com</p></div></div>
           <div className="rounded-2xl p-8 text-center" style={{background: theme.heroBg}}>
-            <div className="flex items-center justify-center gap-4 mb-4"><img src={AFN_LOGO} alt="AFN" className="h-12 w-12 rounded-xl object-contain" style={{background:'#000'}} /><img src={CRAZZY_LOGO} alt="Crazzy" className="h-12 w-12 rounded-xl object-contain" style={{background:'#000'}} /></div>
+            <div className="flex items-center justify-center gap-4 mb-4"><img src={AFN_LOGO} alt="AFN" className="h-12 w-12 rounded-xl object-contain p-1" style={{background:'#fff'}} /><img src={CRAZZY_LOGO} alt="Crazzy" className="h-12 w-12 rounded-xl object-contain p-1" style={{background:'#fff'}} /></div>
             <p className="text-white font-bold text-xl mb-2">AFN GRAPHICS & Crazzy Gifts World</p>
             <p className="italic" style={{color: theme.accent}}>{theme.quote}</p>
           </div>
