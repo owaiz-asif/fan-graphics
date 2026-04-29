@@ -43,17 +43,73 @@ function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString()
 }
 
-async function sendOTPEmail(toEmail, otp) {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: process.env.NODEMAILER_EMAIL, pass: process.env.NODEMAILER_PASSWORD }
-  })
-  await transporter.sendMail({
-    from: `"AFN GRAPHICS" <${process.env.NODEMAILER_EMAIL}>`,
-    to: toEmail,
-    subject: 'AFN GRAPHICS - OTP Verification',
-    html: `<div style="font-family:Arial;padding:20px;background:#f8f9fa;border-radius:10px;"><h2 style="color:#e91e8c;">AFN GRAPHICS</h2><p>Your OTP code is:</p><h1 style="color:#7c3aed;letter-spacing:8px;">${otp}</h1><p>This code expires in 5 minutes.</p></div>`
-  })
+async function sendOTPEmail(toEmail, otp, otpType = 'verification') {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { 
+        user: process.env.NODEMAILER_EMAIL, 
+        pass: process.env.NODEMAILER_PASSWORD 
+      }
+    })
+    
+    const emailTemplates = {
+      admin_login: {
+        subject: 'AFN GRAPHICS - Admin Login OTP',
+        title: 'Admin Login Verification',
+        message: 'Your admin login OTP code is:'
+      },
+      forgot_password: {
+        subject: 'AFN GRAPHICS - Password Reset OTP',
+        title: 'Password Reset Request',
+        message: 'Your password reset OTP code is:'
+      },
+      verification: {
+        subject: 'AFN GRAPHICS - OTP Verification',
+        title: 'OTP Verification',
+        message: 'Your OTP code is:'
+      }
+    }
+    
+    const template = emailTemplates[otpType] || emailTemplates.verification
+    
+    await transporter.sendMail({
+      from: `"AFN GRAPHICS" <${process.env.NODEMAILER_EMAIL}>`,
+      to: toEmail,
+      subject: template.subject,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 500px; margin: 0 auto; background-color: #f8f9fa; padding: 30px; border-radius: 10px;">
+          <div style="background: linear-gradient(135deg, #e91e8c 0%, #7c3aed 100%); padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <h2 style="color: white; margin: 0; text-align: center;">AFN GRAPHICS</h2>
+            <p style="color: white; margin: 5px 0 0 0; text-align: center; font-size: 12px;">You Dream it... We Design it...!!!</p>
+          </div>
+          
+          <div style="background-color: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-top: 0;">${template.title}</h3>
+            <p style="color: #666; font-size: 14px;">${template.message}</p>
+            
+            <div style="background: linear-gradient(135deg, #e91e8c 0%, #7c3aed 100%); padding: 20px; text-align: center; margin: 20px 0; border-radius: 8px;">
+              <h1 style="color: white; letter-spacing: 8px; margin: 0; font-size: 36px;">${otp}</h1>
+            </div>
+            
+            <p style="color: #999; font-size: 12px; text-align: center; margin-bottom: 0;">
+              ⏱️ This code expires in 5 minutes
+            </p>
+          </div>
+          
+          <p style="color: #999; font-size: 11px; text-align: center; margin-top: 20px;">
+            If you didn't request this code, please ignore this email.<br/>
+            © 2025 AFN GRAPHICS. All rights reserved.
+          </p>
+        </div>
+      `
+    })
+    console.log(`✅ OTP email sent successfully to ${toEmail}`)
+    return true
+  } catch (error) {
+    console.error('❌ Failed to send OTP email:', error.message)
+    return false
+  }
 }
 
 function handleCORS(response) {
@@ -106,12 +162,15 @@ async function handleRoute(request, { params }) {
       const { identifier } = await request.json()
       const user = await db.collection('users').findOne({ $or: [{ username: identifier }, { phone: identifier }] })
       if (!user) return handleCORS(NextResponse.json({ error: 'User not found' }, { status: 404 }))
+      if (!user.email) return handleCORS(NextResponse.json({ error: 'No email associated with this account' }, { status: 400 }))
       const otp = generateOTP()
       await db.collection('otp_codes').deleteMany({ user_id: user.id, type: 'forgot_password' })
       await db.collection('otp_codes').insertOne({ id: uuidv4(), user_id: user.id, otp, type: 'forgot_password', expires_at: new Date(Date.now() + 5 * 60 * 1000), created_at: new Date() })
-      let emailSent = false
-      try { if (user.email) { await sendOTPEmail(user.email, otp); emailSent = true } } catch (e) { console.error('Email error:', e.message) }
-      return handleCORS(NextResponse.json({ message: 'OTP generated', email_sent: emailSent, otp_hint: otp }))
+      const emailSent = await sendOTPEmail(user.email, otp, 'forgot_password')
+      const response = { message: emailSent ? 'OTP sent to your email' : 'OTP generated (email delivery failed)', email_sent: emailSent }
+      // Only include OTP hint if email failed (for development/testing)
+      if (!emailSent) response.otp_hint = otp
+      return handleCORS(NextResponse.json(response))
     }
 
     if (route === '/auth/verify-otp' && method === 'POST') {
@@ -293,9 +352,11 @@ async function handleRoute(request, { params }) {
         const otp = generateOTP()
         await db.collection('otp_codes').deleteMany({ admin: true, type: 'admin_login' })
         await db.collection('otp_codes').insertOne({ id: uuidv4(), admin: true, otp, type: 'admin_login', expires_at: new Date(Date.now() + 5 * 60 * 1000), created_at: new Date() })
-        let emailSent = false
-        try { await sendOTPEmail(process.env.ADMIN_EMAIL, otp); emailSent = true } catch (e) { console.error('Admin OTP email error:', e.message) }
-        return handleCORS(NextResponse.json({ message: 'OTP sent to admin email', email_sent: emailSent, otp_hint: otp }))
+        const emailSent = await sendOTPEmail(process.env.ADMIN_EMAIL, otp, 'admin_login')
+        const response = { message: emailSent ? 'OTP sent to admin email' : 'OTP generated (email delivery failed)', email_sent: emailSent }
+        // Only include OTP hint if email failed (for development/testing)
+        if (!emailSent) response.otp_hint = otp
+        return handleCORS(NextResponse.json(response))
       }
       return handleCORS(NextResponse.json({ error: 'Invalid admin credentials' }, { status: 401 }))
     }

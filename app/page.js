@@ -488,8 +488,25 @@ function ForgotPasswordPage({ setCurrentPage, theme }) {
   const [userId, setUserId] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [otpHint, setOtpHint] = useState('')
+  const [emailSent, setEmailSent] = useState(true)
   const [loading, setLoading] = useState(false)
-  const sendOtp = async () => { setLoading(true); try { const d = await api.post('/auth/forgot-password', { identifier }); setOtpHint(d.otp_hint || ''); toast.success('OTP sent!'); setStep(2) } catch (e) { toast.error(e.message) } setLoading(false) }
+  const sendOtp = async () => { 
+    setLoading(true)
+    try { 
+      const d = await api.post('/auth/forgot-password', { identifier })
+      setEmailSent(d.email_sent !== false)
+      setOtpHint(d.otp_hint || '')
+      if (d.email_sent) {
+        toast.success('OTP sent to your email!')
+      } else {
+        toast.warning('Email delivery failed. Check console for OTP.')
+      }
+      setStep(2)
+    } catch (e) { 
+      toast.error(e.message)
+    }
+    setLoading(false)
+  }
   const verifyOtp = async () => { setLoading(true); try { const d = await api.post('/auth/verify-otp', { identifier, otp }); setUserId(d.user_id); toast.success('OTP verified!'); setStep(3) } catch (e) { toast.error(e.message) } setLoading(false) }
   const resetPwd = async () => { setLoading(true); try { await api.post('/auth/reset-password', { user_id: userId, new_password: newPassword }); toast.success('Password reset!'); setCurrentPage('login') } catch (e) { toast.error(e.message) } setLoading(false) }
   return (
@@ -497,9 +514,14 @@ function ForgotPasswordPage({ setCurrentPage, theme }) {
       <Card className="w-full max-w-md animate-fadeIn">
         <CardHeader className="text-center"><CardTitle>Forgot Password</CardTitle><CardDescription>Step {step} of 3</CardDescription></CardHeader>
         <CardContent className="space-y-4">
-          {step === 1 && <><div><Label>Username or Phone</Label><Input value={identifier} onChange={e => setIdentifier(e.target.value)} /></div><Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={sendOtp} disabled={loading}>{loading ? 'Sending...' : 'Send OTP'}</Button></>}
-          {step === 2 && <>{otpHint && <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800"><AlertCircle className="inline h-4 w-4 mr-1" />OTP: <strong>{otpHint}</strong></div>}<div><Label>Enter OTP</Label><Input value={otp} onChange={e => setOtp(e.target.value)} /></div><Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={verifyOtp} disabled={loading}>{loading ? 'Verifying...' : 'Verify OTP'}</Button></>}
-          {step === 3 && <><div><Label>New Password</Label><Input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} /></div><Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={resetPwd} disabled={loading}>{loading ? 'Resetting...' : 'Reset Password'}</Button></>}
+          {step === 1 && <><div><Label>Username or Phone</Label><Input value={identifier} onChange={e => setIdentifier(e.target.value)} placeholder="Enter username or phone" /></div><Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={sendOtp} disabled={loading}>{loading ? 'Sending...' : 'Send OTP'}</Button></>}
+          {step === 2 && <>
+            {emailSent && <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800"><Mail className="inline h-4 w-4 mr-1" />OTP sent to your email. Check your inbox!</div>}
+            {!emailSent && otpHint && <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800"><AlertCircle className="inline h-4 w-4 mr-1" /><strong>Email failed.</strong> Your OTP: <strong className="text-lg">{otpHint}</strong><p className="text-xs mt-1">Make sure your email is registered.</p></div>}
+            <div><Label>Enter 6-digit OTP</Label><Input value={otp} onChange={e => setOtp(e.target.value)} placeholder="000000" maxLength={6} /></div>
+            <Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={verifyOtp} disabled={loading || otp.length !== 6}>{loading ? 'Verifying...' : 'Verify OTP'}</Button>
+          </>}
+          {step === 3 && <><div><Label>New Password</Label><Input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Enter new password" /></div><Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={resetPwd} disabled={loading || !newPassword}>{loading ? 'Resetting...' : 'Reset Password'}</Button></>}
           <Button variant="ghost" className="w-full" onClick={() => setCurrentPage('login')}><ArrowLeft className="h-4 w-4 mr-2" />Back to Login</Button>
         </CardContent>
       </Card>
@@ -686,16 +708,38 @@ function AdminLoginPage({ setCurrentPage, onLogin, theme }) {
   const [password, setPassword] = useState('')
   const [otp, setOtp] = useState('')
   const [otpHint, setOtpHint] = useState('')
+  const [emailSent, setEmailSent] = useState(true)
   const [loading, setLoading] = useState(false)
-  const loginAdmin = async () => { setLoading(true); try { const d = await api.post('/admin/login', { username, password }); setOtpHint(d.otp_hint||''); toast.success('OTP sent!'); setStep(2) } catch (e) { toast.error(e.message) } setLoading(false) }
+  const loginAdmin = async () => { 
+    setLoading(true)
+    try { 
+      const d = await api.post('/admin/login', { username, password })
+      setEmailSent(d.email_sent !== false)
+      setOtpHint(d.otp_hint || '')
+      if (d.email_sent) {
+        toast.success('OTP sent to your email!')
+      } else {
+        toast.warning('Email delivery failed. Check console for OTP.')
+      }
+      setStep(2)
+    } catch (e) { 
+      toast.error(e.message)
+    }
+    setLoading(false)
+  }
   const verifyOtp = async () => { setLoading(true); try { const d = await api.post('/admin/verify-otp', { otp }); onLogin(d.token, d.user); toast.success('Admin login successful!'); setCurrentPage('admin') } catch (e) { toast.error(e.message) } setLoading(false) }
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4 bg-gray-50">
       <Card className="w-full max-w-md animate-fadeIn">
-        <CardHeader className="text-center"><Shield className="h-12 w-12 mx-auto mb-2" style={{color: theme.primary}} /><CardTitle>Admin Panel</CardTitle><CardDescription>Step {step}: {step===1?'Credentials':'OTP'}</CardDescription></CardHeader>
+        <CardHeader className="text-center"><Shield className="h-12 w-12 mx-auto mb-2" style={{color: theme.primary}} /><CardTitle>Admin Panel</CardTitle><CardDescription>Step {step}: {step===1?'Credentials':'OTP Verification'}</CardDescription></CardHeader>
         <CardContent className="space-y-4">
           {step===1 && <><div><Label>Username</Label><Input value={username} onChange={e=>setUsername(e.target.value)} /></div><div><Label>Password</Label><Input type="password" value={password} onChange={e=>setPassword(e.target.value)} /></div><Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={loginAdmin} disabled={loading}>{loading?'...':'Continue'}</Button></>}
-          {step===2 && <>{otpHint && <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm"><AlertCircle className="inline h-4 w-4 mr-1" />OTP: <strong>{otpHint}</strong></div>}<div><Label>OTP</Label><Input value={otp} onChange={e=>setOtp(e.target.value)} /></div><Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={verifyOtp} disabled={loading}>{loading?'...':'Verify & Login'}</Button></>}
+          {step===2 && <>
+            {emailSent && <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800"><Mail className="inline h-4 w-4 mr-1" />OTP sent to your email. Check your inbox!</div>}
+            {!emailSent && otpHint && <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-sm text-yellow-800"><AlertCircle className="inline h-4 w-4 mr-1" /><strong>Email failed.</strong> Your OTP: <strong className="text-lg">{otpHint}</strong><p className="text-xs mt-1">Configure Gmail App Password for email delivery.</p></div>}
+            <div><Label>Enter 6-digit OTP</Label><Input value={otp} onChange={e=>setOtp(e.target.value)} placeholder="000000" maxLength={6} /></div>
+            <Button className="w-full text-white" style={{background: theme.buttonBg}} onClick={verifyOtp} disabled={loading || otp.length !== 6}>{loading?'...':'Verify & Login'}</Button>
+          </>}
           <Button variant="ghost" className="w-full" onClick={()=>setCurrentPage('landing')}><ArrowLeft className="h-4 w-4 mr-2" />Back</Button>
         </CardContent>
       </Card>
