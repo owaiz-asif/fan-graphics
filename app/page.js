@@ -114,7 +114,7 @@ function BrandSelector({ onSelect }) {
           {/* AFN Graphics */}
           <div onClick={() => onSelect('afn_graphics')} className="cursor-pointer group">
             <div className="rounded-3xl text-center border-2 transition-all duration-500 group-hover:scale-[1.03] overflow-hidden relative" style={{borderColor: 'rgba(233,30,140,0.3)', boxShadow: '0 0 0px rgba(233,30,140,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 50px rgba(233,30,140,0.4)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(233,30,140,0)'}>
-              <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${AFN_HERO_BG})`}} />
+              <div className="absolute inset-0" style={{backgroundImage: `url("${AFN_HERO_BG}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} />
               <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(26,10,46,0.85))'}} />
               <div className="relative p-8 md:p-10">
                 <img src={AFN_LOGO} alt="AFN Graphics" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain p-2" style={{background: '#fff', border: '2px solid rgba(233,30,140,0.3)', boxShadow: '0 0 25px rgba(233,30,140,0.2)'}} />
@@ -129,7 +129,7 @@ function BrandSelector({ onSelect }) {
           <div onClick={() => onSelect('crazzy_gifts')} className="cursor-pointer group">
             <div className="rounded-3xl text-center border-2 transition-all duration-500 group-hover:scale-[1.03] overflow-hidden relative" style={{background: 'linear-gradient(135deg, #000000 0%, #042f2e 50%, #000000 100%)', borderColor: 'rgba(45,212,191,0.3)', boxShadow: '0 0 0px rgba(45,212,191,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 50px rgba(45,212,191,0.4)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(45,212,191,0)'}>
               <div className="absolute inset-4 border rounded-2xl opacity-15" style={{borderColor: '#2dd4bf'}} />
-              <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${CRAZZY_HERO_BG})`}} />
+              <div className="absolute inset-0" style={{backgroundImage: `url("${CRAZZY_HERO_BG}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} />
               <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.75))'}} />
               <div className="relative p-8 md:p-10">
                 <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain p-2" style={{background: '#fff', border: '2px solid rgba(45,212,191,0.3)', boxShadow: '0 0 25px rgba(45,212,191,0.2)'}} />
@@ -320,7 +320,7 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
       {/* AFN Graphics Hero - with background image */}
       {activeBrand === 'afn_graphics' ? (
         <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
-          <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${AFN_HERO_BG})`}} />
+          <div className="absolute inset-0" style={{backgroundImage: `url("${AFN_HERO_BG}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} />
           <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%)'}} />
           <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <div className="text-center">
@@ -345,7 +345,7 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
       ) : (
         /* Crazzy Gifts World Hero - vibrant 3D */
         <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
-          <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${CRAZZY_HERO_BG})`}} />
+          <div className="absolute inset-0" style={{backgroundImage: `url("${CRAZZY_HERO_BG}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} />
           <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.72) 100%)'}} />
           {/* Animated gradient blobs */}
           <div className="absolute inset-0" style={{background: 'radial-gradient(circle 600px at 25% 40%, rgba(13,148,136,0.25) 0%, transparent 70%), radial-gradient(circle 500px at 75% 60%, rgba(45,212,191,0.2) 0%, transparent 70%), radial-gradient(circle 400px at 50% 20%, rgba(94,234,212,0.1) 0%, transparent 70%)'}} />
