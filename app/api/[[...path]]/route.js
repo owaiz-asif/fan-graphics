@@ -8,12 +8,60 @@ import nodemailer from 'nodemailer'
 
 let client
 let db
+let mongoAvailable = true
+
+const DUMMY_CATEGORIES = [
+  { id: 'afn-logo', name: 'Logo Designing', brand: 'afn_graphics' },
+  { id: 'afn-banner', name: 'Banner Design', brand: 'afn_graphics' },
+  { id: 'afn-visiting', name: 'Visiting Cards', brand: 'afn_graphics' },
+  { id: 'afn-brochures', name: 'Brochures', brand: 'afn_graphics' },
+  { id: 'afn-billbooks', name: 'Bill Books', brand: 'afn_graphics' },
+  { id: 'afn-idcards', name: 'Employee ID Cards', brand: 'afn_graphics' },
+  { id: 'afn-lanyards', name: 'Lanyard Prints', brand: 'afn_graphics' },
+  { id: 'afn-labels', name: 'Labels & Stickers', brand: 'afn_graphics' },
+  { id: 'crazzy-mugs', name: 'Personalized Mugs', brand: 'crazzy_gifts' },
+  { id: 'crazzy-tshirts', name: 'Custom T-Shirts', brand: 'crazzy_gifts' },
+  { id: 'crazzy-frames', name: 'Photo Frames', brand: 'crazzy_gifts' },
+  { id: 'crazzy-keychains', name: 'Keychains', brand: 'crazzy_gifts' },
+  { id: 'crazzy-hampers', name: 'Gift Hampers', brand: 'crazzy_gifts' },
+  { id: 'crazzy-covers', name: 'Mobile Covers', brand: 'crazzy_gifts' },
+  { id: 'crazzy-cushions', name: 'Cushion Covers', brand: 'crazzy_gifts' },
+  { id: 'crazzy-clocks', name: 'Wall Clocks', brand: 'crazzy_gifts' },
+  { id: 'crazzy-pens', name: 'Personalized Pens', brand: 'crazzy_gifts' }
+]
+
+const DUMMY_PRODUCTS = [
+  { id: 'afn-1', name: 'Premium Logo Design', price: 2500, description: 'Custom brand logo design for your business.', category: 'Logo Designing', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80' },
+  { id: 'afn-2', name: 'Corporate Banner Design', price: 1500, description: 'Eye-catching banner design for your event.', category: 'Banner Design', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1521790797521-8f8006b3bbd5?auto=format&fit=crop&w=600&q=80' },
+  { id: 'afn-3', name: 'Business Visiting Cards', price: 500, description: 'Premium visiting cards with elegant design.', category: 'Visiting Cards', brand: 'afn_graphics', image_url: 'https://images.pexels.com/photos/4623113/pexels-photo-4623113.jpeg?auto=compress&w=600' },
+  { id: 'afn-4', name: 'Company Brochure Design', price: 3000, description: 'Multi-page brochure design with stunning layouts.', category: 'Brochures', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1476569813425-6c0d68d0cf86?auto=format&fit=crop&w=600&q=80' },
+  { id: 'afn-5', name: 'Custom Bill Book', price: 800, description: 'Customized bill books with your company logo and details.', category: 'Bill Books', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1512446733611-909c0d8f0e5b?auto=format&fit=crop&w=600&q=80' },
+  { id: 'afn-6', name: 'Employee ID Card', price: 200, description: 'Professional employee ID cards with photo.', category: 'Employee ID Cards', brand: 'afn_graphics', image_url: 'https://images.pexels.com/photos/12902944/pexels-photo-12902944.jpeg?auto=compress&w=600' },
+  { id: 'afn-7', name: 'Custom Lanyard Print', price: 150, description: 'Branded lanyards with custom prints for your event.', category: 'Lanyard Prints', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1571110423523-4729dddb8a12?auto=format&fit=crop&w=600&q=80' },
+  { id: 'afn-8', name: 'Product Labels Pack', price: 300, description: 'Custom product labels with vibrant colors.', category: 'Labels & Stickers', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1517638851339-4a2dd8f1a728?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-1', name: 'Personalized Photo Mug', price: 399, description: 'Custom printed mug for your favorite memories.', category: 'Personalized Mugs', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1517686469429-8bdb17f60bef?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-2', name: 'Custom Printed T-Shirt', price: 599, description: 'Premium cotton t-shirt with your custom design.', category: 'Custom T-Shirts', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-3', name: 'Collage Photo Frame', price: 799, description: 'Beautiful collage photo frame with space for multiple photos.', category: 'Photo Frames', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-4', name: 'Custom Metal Keychain', price: 199, description: 'Premium metal keychain with engraved customization.', category: 'Keychains', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1622434641406-a158123450f9?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-5', name: 'Premium Gift Hamper', price: 1999, description: 'Luxury gift hamper with chocolates, mugs, and more.', category: 'Gift Hampers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1549465220-1a8b9238f7e7?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-6', name: 'Custom Phone Cover', price: 349, description: 'Personalized phone cover with your favorite image.', category: 'Mobile Covers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1519222970733-f546218fa6d7?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-7', name: 'Photo Cushion Cover', price: 499, description: 'Soft cushion cover printed with your custom photo.', category: 'Cushion Covers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-8', name: 'Custom Wall Clock', price: 899, description: 'Wooden wall clock with a personalized photo face.', category: 'Wall Clocks', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?auto=format&fit=crop&w=600&q=80' },
+  { id: 'crazzy-9', name: 'Personalized Pen Set', price: 349, description: 'Elegant engraved pen set in a luxury gift box.', category: 'Personalized Pens', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1514067697843-066fcde033e8?auto=format&fit=crop&w=600&q=80' }
+]
 
 async function connectToMongo() {
+  if (!mongoAvailable) return null
   if (!client) {
-    client = new MongoClient(process.env.MONGO_URL)
-    await client.connect()
-    db = client.db(process.env.DB_NAME)
+    try {
+      client = new MongoClient(process.env.MONGO_URL)
+      await client.connect()
+      db = client.db(process.env.DB_NAME)
+    } catch (error) {
+      mongoAvailable = false
+      console.error('MongoDB connection failed:', error.message)
+      return null
+    }
   }
   return db
 }
@@ -123,13 +171,19 @@ export async function OPTIONS() {
   return handleCORS(new NextResponse(null, { status: 200 }))
 }
 
-async function handleRoute(request, { params }) {
-  const { path = [] } = params
+async function handleRoute(request, context) {
+  const { params } = context
+  const resolvedParams = await params
+  const { path = [] } = resolvedParams || {}
   const route = `/${path.join('/')}`
   const method = request.method
 
   try {
     const db = await connectToMongo()
+
+    if (!db && !(route === '/products' && method === 'GET') && !(route === '/categories' && method === 'GET') && !(route === '/seed' && method === 'POST') && !(route === '/' && method === 'GET')) {
+      return handleCORS(NextResponse.json({ error: 'Service unavailable while MongoDB is offline' }, { status: 503 }))
+    }
 
     // ========== AUTH ==========
     if (route === '/auth/register' && method === 'POST') {
@@ -195,6 +249,18 @@ async function handleRoute(request, { params }) {
       const category = url.searchParams.get('category')
       const search = url.searchParams.get('search')
       const brand = url.searchParams.get('brand')
+
+      if (!db) {
+        let results = [...DUMMY_PRODUCTS]
+        if (brand) results = results.filter(p => p.brand === brand)
+        if (category && category !== 'all') results = results.filter(p => p.category === category)
+        if (search) {
+          const query = search.toLowerCase()
+          results = results.filter(p => p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query) || p.category.toLowerCase().includes(query))
+        }
+        return handleCORS(NextResponse.json(results))
+      }
+
       let filter = {}
       if (brand) filter.brand = brand
       if (category && category !== 'all') filter.category = category
@@ -251,6 +317,12 @@ async function handleRoute(request, { params }) {
     if (route === '/categories' && method === 'GET') {
       const url = new URL(request.url)
       const brand = url.searchParams.get('brand')
+
+      if (!db) {
+        const results = DUMMY_CATEGORIES.filter(cat => !brand || cat.brand === brand)
+        return handleCORS(NextResponse.json(results))
+      }
+
       let filter = {}
       if (brand) filter.brand = brand
       const cats = await db.collection('categories').find(filter).sort({ name: 1 }).toArray()
@@ -393,6 +465,9 @@ async function handleRoute(request, { params }) {
 
     // ========== SEED ==========
     if (route === '/seed' && method === 'POST') {
+      if (!db) {
+        return handleCORS(NextResponse.json({ message: 'Seed skipped because MongoDB is unavailable locally' }))
+      }
       // Check if data needs migration (no brand field)
       const sampleProd = await db.collection('products').findOne({})
       if (sampleProd && !sampleProd.brand) {
@@ -424,18 +499,18 @@ async function handleRoute(request, { params }) {
       const afnCount = await db.collection('products').countDocuments({ brand: 'afn_graphics' })
       if (afnCount === 0) {
         const afnProducts = [
-          { name: 'Premium Logo Design', price: 2500, description: 'Professional custom logo design with unlimited revisions. Stand out with a unique brand identity.', category: 'Logo Designing', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600' },
-          { name: 'Corporate Banner Design', price: 1500, description: 'Eye-catching banner designs for events, promotions, and business branding.', category: 'Banner Design', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600' },
+          { name: 'Premium Logo Design', price: 2500, description: 'Professional custom logo design with unlimited revisions. Stand out with a unique brand identity.', category: 'Logo Designing', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Corporate Banner Design', price: 1500, description: 'Eye-catching banner designs for events, promotions, and business branding.', category: 'Banner Design', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1521790797521-8f8006b3bbd5?auto=format&fit=crop&w=600&q=80' },
           { name: 'Business Visiting Cards', price: 500, description: 'Premium quality visiting cards with elegant design. Pack of 100 on 300gsm paper.', category: 'Visiting Cards', brand: 'afn_graphics', image_url: 'https://images.pexels.com/photos/4623113/pexels-photo-4623113.jpeg?auto=compress&w=600' },
-          { name: 'Company Brochure Design', price: 3000, description: 'Multi-page professional brochure design with stunning layouts.', category: 'Brochures', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=600' },
-          { name: 'Custom Bill Book', price: 800, description: 'Customized bill books with your company logo and details.', category: 'Bill Books', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1581079289196-67865ea83118?w=600' },
+          { name: 'Company Brochure Design', price: 3000, description: 'Multi-page professional brochure design with stunning layouts.', category: 'Brochures', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1476569813425-6c0d68d0cf86?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Custom Bill Book', price: 800, description: 'Customized bill books with your company logo and details.', category: 'Bill Books', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1512446733611-909c0d8f0e5b?auto=format&fit=crop&w=600&q=80' },
           { name: 'Employee ID Card', price: 200, description: 'Professional employee ID cards with photo. Durable PVC material.', category: 'Employee ID Cards', brand: 'afn_graphics', image_url: 'https://images.pexels.com/photos/12902944/pexels-photo-12902944.jpeg?auto=compress&w=600' },
-          { name: 'Custom Lanyard Print', price: 150, description: 'Branded lanyards with custom prints for corporate events.', category: 'Lanyard Prints', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600' },
-          { name: 'Product Labels Pack', price: 300, description: 'Custom product labels with vibrant colors. Pack of 500 labels.', category: 'Labels & Stickers', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1581079289196-67865ea83118?w=600' },
-          { name: 'Minimalist Logo Package', price: 1800, description: 'Clean modern minimalist logo. 3 concepts, unlimited revisions.', category: 'Logo Designing', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600' },
-          { name: 'Roll-Up Banner Stand', price: 2200, description: 'Premium roll-up banner with stand for exhibitions and retail.', category: 'Banner Design', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=600' },
+          { name: 'Custom Lanyard Print', price: 150, description: 'Branded lanyards with custom prints for corporate events.', category: 'Lanyard Prints', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1519744792095-2f2205e87b6f?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Product Labels Pack', price: 300, description: 'Custom product labels with vibrant colors. Pack of 500 labels.', category: 'Labels & Stickers', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1517638851339-4a2dd8f1a728?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Minimalist Logo Package', price: 1800, description: 'Clean modern minimalist logo. 3 concepts, unlimited revisions.', category: 'Logo Designing', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1522881451255-f59ad736f62a?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Roll-Up Banner Stand', price: 2200, description: 'Premium roll-up banner with stand for exhibitions and retail.', category: 'Banner Design', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1537498425277-c283d32ef9db?auto=format&fit=crop&w=600&q=80' },
           { name: 'Luxury Visiting Cards', price: 1200, description: 'Premium cards with foil stamping. Pack of 200 on 400gsm stock.', category: 'Visiting Cards', brand: 'afn_graphics', image_url: 'https://images.pexels.com/photos/4623113/pexels-photo-4623113.jpeg?auto=compress&w=600' },
-          { name: 'Tri-Fold Brochure', price: 1800, description: 'Professional tri-fold brochure with custom illustrations.', category: 'Brochures', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1503694978374-8a2fa686963a?w=600' },
+          { name: 'Tri-Fold Brochure', price: 1800, description: 'Professional tri-fold brochure with custom illustrations.', category: 'Brochures', brand: 'afn_graphics', image_url: 'https://images.unsplash.com/photo-1494172961521-33799ddd43a5?auto=format&fit=crop&w=600&q=80' },
         ]
         for (const p of afnProducts) await db.collection('products').insertOne({ id: uuidv4(), ...p, created_at: new Date() })
       }
@@ -444,16 +519,16 @@ async function handleRoute(request, { params }) {
       const crazzyCount = await db.collection('products').countDocuments({ brand: 'crazzy_gifts' })
       if (crazzyCount === 0) {
         const crazzyProducts = [
-          { name: 'Magic Color Changing Mug', price: 450, description: 'Personalized magic mug that reveals your photo with hot water. Perfect surprise gift!', category: 'Personalized Mugs', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600' },
-          { name: 'Custom Photo Mug', price: 299, description: 'White ceramic mug with your favorite photo printed in vibrant colors.', category: 'Personalized Mugs', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1572119865084-43c285814d63?w=600' },
-          { name: 'Custom Printed T-Shirt', price: 599, description: 'Premium cotton t-shirt with your custom design. Available in all sizes.', category: 'Custom T-Shirts', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600' },
-          { name: 'Collage Photo Frame', price: 799, description: 'Beautiful collage photo frame with space for 8 photos. Wooden frame.', category: 'Photo Frames', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?w=600' },
-          { name: 'Custom Metal Keychain', price: 199, description: 'Premium metal keychain with your name or photo engraved.', category: 'Keychains', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1622434641406-a158123450f9?w=600' },
-          { name: 'Premium Gift Hamper', price: 1999, description: 'Luxury gift hamper with chocolates, mug, frame, and more. Perfect for all occasions.', category: 'Gift Hampers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1549465220-1a8b9238f7e7?w=600' },
-          { name: 'Custom Phone Cover', price: 349, description: 'Personalized phone cover with your photo. Available for all models.', category: 'Mobile Covers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?w=600' },
-          { name: 'Photo Cushion Cover', price: 499, description: 'Soft velvet cushion cover with your custom photo print.', category: 'Cushion Covers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600' },
-          { name: 'Custom Wall Clock', price: 899, description: 'Wooden wall clock with your favorite photo. Silent movement.', category: 'Wall Clocks', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=600' },
-          { name: 'Personalized Pen Set', price: 349, description: 'Elegant pen set with your name engraved. Comes in a gift box.', category: 'Personalized Pens', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=600' },
+          { name: 'Magic Color Changing Mug', price: 450, description: 'Personalized magic mug that reveals your photo with hot water. Perfect surprise gift!', category: 'Personalized Mugs', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Custom Photo Mug', price: 299, description: 'White ceramic mug with your favorite photo printed in vibrant colors.', category: 'Personalized Mugs', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1572119865084-43c285814d63?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Custom Printed T-Shirt', price: 599, description: 'Premium cotton t-shirt with your custom design. Available in all sizes.', category: 'Custom T-Shirts', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Collage Photo Frame', price: 799, description: 'Beautiful collage photo frame with space for 8 photos. Wooden frame.', category: 'Photo Frames', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e35ca?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Custom Metal Keychain', price: 199, description: 'Premium metal keychain with your name or photo engraved.', category: 'Keychains', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1600180758893-24b4f9f7131d?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Premium Gift Hamper', price: 1999, description: 'Luxury gift hamper with chocolates, mug, frame, and more. Perfect for all occasions.', category: 'Gift Hampers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1549465220-1a8b9238f7e7?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Custom Phone Cover', price: 349, description: 'Personalized phone cover with your photo. Available for all models.', category: 'Mobile Covers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1512499617640-c2f99924f7b1?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Photo Cushion Cover', price: 499, description: 'Soft velvet cushion cover printed with your custom photo.', category: 'Cushion Covers', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Custom Wall Clock', price: 899, description: 'Wooden wall clock with a personalized photo face.', category: 'Wall Clocks', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1512499617640-8d7b90b4a8e6?auto=format&fit=crop&w=600&q=80' },
+          { name: 'Personalized Pen Set', price: 349, description: 'Elegant pen set with your name engraved. Comes in a gift box.', category: 'Personalized Pens', brand: 'crazzy_gifts', image_url: 'https://images.unsplash.com/photo-1514067697843-066fcde033e8?auto=format&fit=crop&w=600&q=80' },
         ]
         for (const p of crazzyProducts) await db.collection('products').insertOne({ id: uuidv4(), ...p, created_at: new Date() })
       }

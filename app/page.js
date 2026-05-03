@@ -19,11 +19,21 @@ import {
   ArrowLeftRight, Store
 } from 'lucide-react'
 
-const AFN_LOGO = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/edw1si2v_AFN%20New%20Logo.png'
-const CRAZZY_LOGO = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/rivzvsxn_Crazy%20Gifts.png'
+const AFN_LOGO = '/afn-logo.png'
+const CRAZZY_LOGO = '/crazzy-logo.png'
 const QR_URL = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/ezps4j9i_WhatsApp%20Image%202026-04-21%20at%2006.18.34.jpeg'
-const AFN_HERO_BG = 'https://customer-assets.emergentagent.com/job_afn-design-mart/artifacts/we7n5094_WhatsApp%20Image%202026-04-27%20at%2011.27.05.jpeg'
-const PHONE_NO = '+91 63607 72095'
+const AFN_HERO_BG = '/afn-bg.png'
+const CRAZZY_HERO_BG = '/crazzy-bg.png'
+const BRAND_CONTACT = {
+  afn_graphics: { phone: '+91 63607 72095', email: 'afngraphics7867@gmail.com' },
+  crazzy_gifts: { phone: '+91 6360772095', email: 'crazzygiftsworld@gmail.com' }
+}
+const getBrandContact = (brand) => BRAND_CONTACT[brand] || BRAND_CONTACT.afn_graphics
+
+const getProductImage = (item, fallback = 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400') => {
+  if (!item) return fallback
+  return item.image_url || item.image || item.product_image || fallback
+}
 
 const BRAND_CONFIG = {
   afn_graphics: {
@@ -96,7 +106,7 @@ const api = {
 function BrandSelector({ onSelect }) {
   return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10" style={{backgroundImage: `url(${AFN_HERO_BG})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(20px)'}} />
+      <div className="absolute inset-0" style={{background: 'radial-gradient(circle at 20% 20%, rgba(233,30,140,0.18), transparent 24%), radial-gradient(circle at 80% 90%, rgba(45,212,191,0.14), transparent 30%), #020617'}} />
       <div className="relative z-10 max-w-5xl w-full">
         <h1 className="text-center text-white text-3xl md:text-5xl font-bold mb-3">Welcome</h1>
         <p className="text-center text-gray-400 mb-12 text-lg">Choose your destination</p>
@@ -104,7 +114,7 @@ function BrandSelector({ onSelect }) {
           {/* AFN Graphics */}
           <div onClick={() => onSelect('afn_graphics')} className="cursor-pointer group">
             <div className="rounded-3xl text-center border-2 transition-all duration-500 group-hover:scale-[1.03] overflow-hidden relative" style={{borderColor: 'rgba(233,30,140,0.3)', boxShadow: '0 0 0px rgba(233,30,140,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 50px rgba(233,30,140,0.4)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(233,30,140,0)'}>
-              <div className="absolute inset-0"><img src={AFN_HERO_BG} alt="" className="w-full h-full object-cover" /></div>
+              <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${AFN_HERO_BG})`}} />
               <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(26,10,46,0.85))'}} />
               <div className="relative p-8 md:p-10">
                 <img src={AFN_LOGO} alt="AFN Graphics" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain p-2" style={{background: '#fff', border: '2px solid rgba(233,30,140,0.3)', boxShadow: '0 0 25px rgba(233,30,140,0.2)'}} />
@@ -119,6 +129,8 @@ function BrandSelector({ onSelect }) {
           <div onClick={() => onSelect('crazzy_gifts')} className="cursor-pointer group">
             <div className="rounded-3xl text-center border-2 transition-all duration-500 group-hover:scale-[1.03] overflow-hidden relative" style={{background: 'linear-gradient(135deg, #000000 0%, #042f2e 50%, #000000 100%)', borderColor: 'rgba(45,212,191,0.3)', boxShadow: '0 0 0px rgba(45,212,191,0)'}} onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 50px rgba(45,212,191,0.4)'} onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 0px rgba(45,212,191,0)'}>
               <div className="absolute inset-4 border rounded-2xl opacity-15" style={{borderColor: '#2dd4bf'}} />
+              <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${CRAZZY_HERO_BG})`}} />
+              <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.75))'}} />
               <div className="relative p-8 md:p-10">
                 <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-32 w-32 mx-auto mb-5 rounded-2xl object-contain p-2" style={{background: '#fff', border: '2px solid rgba(45,212,191,0.3)', boxShadow: '0 0 25px rgba(45,212,191,0.2)'}} />
                 <h2 className="text-3xl md:text-4xl font-black mb-1" style={{fontFamily: 'Playfair Display, serif', color: '#2dd4bf', textShadow: '0 3px 0 #064e45, 0 6px 12px rgba(0,0,0,0.8), 0 0 30px rgba(45,212,191,0.3)'}}>Crazzy Gifts</h2>
@@ -224,7 +236,7 @@ function ProductCard({ product, showPrice = true, onView, onAddToCart, user, the
   return (
     <Card className="card-hover overflow-hidden border group" style={{borderColor: 'rgba(0,0,0,0.08)'}}>
       <div className="relative overflow-hidden aspect-[4/3] bg-gray-100">
-        <img src={product.image_url || 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400'} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+        <img src={getProductImage(product)} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400?text=No+Image' }} />
         <Badge className="absolute top-3 left-3 text-white text-xs" style={{background: theme.badgeBg}}>{product.category}</Badge>
       </div>
       <CardContent className="p-4">
@@ -274,8 +286,8 @@ function Footer({ setCurrentPage, theme, activeBrand }) {
           <div>
             <h3 className="font-semibold mb-4">Contact</h3>
             <div className="flex flex-col gap-2 text-sm text-gray-400">
-              <div className="flex items-center gap-2"><Phone className="h-4 w-4" style={{color: theme.primary}} />{PHONE_NO}</div>
-              <div className="flex items-center gap-2"><Mail className="h-4 w-4" style={{color: theme.primary}} />afngraphics7867@gmail.com</div>
+              <div className="flex items-center gap-2"><Phone className="h-4 w-4" style={{color: theme.primary}} />{getBrandContact(activeBrand).phone}</div>
+              <div className="flex items-center gap-2"><Mail className="h-4 w-4" style={{color: theme.primary}} />{getBrandContact(activeBrand).email}</div>
             </div>
           </div>
         </div>
@@ -295,7 +307,9 @@ function Footer({ setCurrentPage, theme, activeBrand }) {
 // ========== LANDING PAGE ==========
 function LandingPage({ products, categories, setCurrentPage, searchQuery, setSearchQuery, selectedCategory, setSelectedCategory, theme, activeBrand }) {
   const catIcons = activeBrand === 'afn_graphics' ? AFN_CAT_ICONS : CRAZZY_CAT_ICONS
-  const filtered = products.filter(p => {
+  const safeProducts = Array.isArray(products) ? products : []
+  const safeCategories = Array.isArray(categories) ? categories : []
+  const filtered = safeProducts.filter(p => {
     const matchCat = !selectedCategory || selectedCategory === 'all' || p.category === selectedCategory
     const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase())
     return matchCat && matchSearch
@@ -306,7 +320,7 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
       {/* AFN Graphics Hero - with background image */}
       {activeBrand === 'afn_graphics' ? (
         <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
-          <div className="absolute inset-0"><img src={AFN_HERO_BG} alt="" className="w-full h-full object-cover" /></div>
+          <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${AFN_HERO_BG})`}} />
           <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%)'}} />
           <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <div className="text-center">
@@ -330,7 +344,9 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
         </div>
       ) : (
         /* Crazzy Gifts World Hero - vibrant 3D */
-        <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center" style={{background: '#000'}}>
+        <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
+          <div className="absolute inset-0 bg-cover bg-center" style={{backgroundImage: `url(${CRAZZY_HERO_BG})`}} />
+          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.72) 100%)'}} />
           {/* Animated gradient blobs */}
           <div className="absolute inset-0" style={{background: 'radial-gradient(circle 600px at 25% 40%, rgba(13,148,136,0.25) 0%, transparent 70%), radial-gradient(circle 500px at 75% 60%, rgba(45,212,191,0.2) 0%, transparent 70%), radial-gradient(circle 400px at 50% 20%, rgba(94,234,212,0.1) 0%, transparent 70%)'}} />
           {/* Sparkle dots */}
@@ -388,7 +404,7 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-1 py-3 overflow-x-auto scrollbar-hide">
             <button className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${!selectedCategory || selectedCategory === 'all' ? 'text-white' : 'text-gray-600 hover:bg-gray-100'}`} style={!selectedCategory || selectedCategory === 'all' ? {background: theme.buttonBg} : {}} onClick={() => setSelectedCategory('all')}>View All</button>
-            {categories.map(cat => {
+            {safeCategories.map(cat => {
               const Icon = catIcons[cat.name] || Palette
               const isActive = selectedCategory === cat.name
               return <button key={cat.id} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${isActive ? 'text-white' : 'text-gray-600 hover:bg-gray-100'}`} style={isActive ? {background: theme.buttonBg} : {}} onClick={() => setSelectedCategory(cat.name)}><Icon className="h-3.5 w-3.5" />{cat.name}</button>
@@ -532,7 +548,9 @@ function ForgotPasswordPage({ setCurrentPage, theme }) {
 // ========== HOME PAGE ==========
 function HomePage({ products, categories, user, token, setCurrentPage, searchQuery, setSearchQuery, selectedCategory, setSelectedCategory, onAddToCart, viewMode, setViewMode, theme, activeBrand }) {
   const catIcons = activeBrand === 'afn_graphics' ? AFN_CAT_ICONS : CRAZZY_CAT_ICONS
-  const filtered = products.filter(p => {
+  const safeProducts = Array.isArray(products) ? products : []
+  const safeCategories = Array.isArray(categories) ? categories : []
+  const filtered = safeProducts.filter(p => {
     const matchCat = !selectedCategory || selectedCategory === 'all' || p.category === selectedCategory
     const matchSearch = !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.description.toLowerCase().includes(searchQuery.toLowerCase())
     return matchCat && matchSearch
@@ -555,7 +573,7 @@ function HomePage({ products, categories, user, token, setCurrentPage, searchQue
             <Package className="h-10 w-10 mx-auto mb-3" style={{color: theme.primary}} />
             <h3 className="text-lg font-semibold mb-2" style={{color: theme.secondary}}>Bulk Production Orders</h3>
             <p className="text-gray-600 mb-3">Prices may vary based on quantity and requirements.</p>
-            <div className="flex items-center justify-center gap-2 font-bold text-lg" style={{color: theme.primary}}><Phone className="h-5 w-5" />{PHONE_NO}</div>
+            <div className="flex items-center justify-center gap-2 font-bold text-lg" style={{color: theme.primary}}><Phone className="h-5 w-5" />{getBrandContact(activeBrand).phone}</div>
           </div>
         )}
 
@@ -567,7 +585,7 @@ function HomePage({ products, categories, user, token, setCurrentPage, searchQue
         {/* Horizontal category nav */}
         <div className="flex items-center gap-1.5 pb-4 overflow-x-auto scrollbar-hide">
           <button className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all ${!selectedCategory || selectedCategory === 'all' ? 'text-white' : 'text-gray-600 border border-gray-200 hover:bg-gray-100'}`} style={!selectedCategory || selectedCategory === 'all' ? {background: theme.buttonBg} : {}} onClick={() => setSelectedCategory('all')}>All</button>
-          {categories.map(cat => {
+          {safeCategories.map(cat => {
             const Icon = catIcons[cat.name] || Palette
             const isActive = selectedCategory === cat.name
             return <button key={cat.id} className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all flex items-center gap-1 ${isActive ? 'text-white' : 'text-gray-600 border border-gray-200 hover:bg-gray-100'}`} style={isActive ? {background: theme.buttonBg} : {}} onClick={() => setSelectedCategory(cat.name)}><Icon className="h-3 w-3" />{cat.name}</button>
@@ -584,14 +602,14 @@ function HomePage({ products, categories, user, token, setCurrentPage, searchQue
 }
 
 // ========== PRODUCT DETAIL ==========
-function ProductDetailPage({ product, user, viewMode, setCurrentPage, onAddToCart, theme }) {
+function ProductDetailPage({ product, user, viewMode, setCurrentPage, onAddToCart, theme, activeBrand }) {
   if (!product) return <div className="p-8 text-center">Product not found</div>
   const showPrice = viewMode === 'individual'
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 animate-fadeIn">
       <Button variant="ghost" className="mb-6" onClick={() => setCurrentPage(user ? 'home' : 'landing')}><ArrowLeft className="h-4 w-4 mr-2" />Back</Button>
       <div className="grid md:grid-cols-2 gap-8">
-        <div className="rounded-2xl overflow-hidden shadow-xl"><img src={product.image_url || 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600'} alt={product.name} className="w-full h-[400px] object-cover" /></div>
+        <div className="rounded-2xl overflow-hidden shadow-xl"><img src={getProductImage(product, 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600')} alt={product.name} className="w-full h-[400px] object-cover" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/600?text=No+Image' }} /></div>
         <div>
           <Badge className="mb-3 text-white" style={{background: theme.badgeBg}}>{product.category}</Badge>
           <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
@@ -600,7 +618,7 @@ function ProductDetailPage({ product, user, viewMode, setCurrentPage, onAddToCar
             <div className="rounded-xl p-4 mb-6 border" style={{background: theme.lightBg, borderColor: theme.lightBorder}}>
               <p className="font-medium mb-2" style={{color: theme.secondary}}>Bulk Order Pricing</p>
               <p className="text-gray-600 text-sm mb-3">Prices vary based on quantity</p>
-              <div className="flex items-center gap-2 font-bold" style={{color: theme.primary}}><Phone className="h-4 w-4" />{PHONE_NO}</div>
+              <div className="flex items-center gap-2 font-bold" style={{color: theme.primary}}><Phone className="h-4 w-4" />{getBrandContact(activeBrand).phone}</div>
             </div>
           )}
           {showPrice && user && user.role !== 'admin' && <Button size="lg" className="w-full md:w-auto text-white" style={{background: theme.buttonBg}} onClick={() => { onAddToCart(product.id); toast.success('Added to cart!') }}><ShoppingCart className="h-5 w-5 mr-2" />Add to Cart</Button>}
@@ -623,7 +641,7 @@ function CartPage({ cart, setCurrentPage, onUpdateCart, onRemoveFromCart, theme 
         <>
           <div className="space-y-4 mb-8">{cart.map(item => (
             <Card key={item.id}><CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4">
-              <img src={item.product_image || 'https://via.placeholder.com/80'} alt={item.product_name} className="w-20 h-20 object-cover rounded-lg" />
+              <img src={getProductImage(item, 'https://via.placeholder.com/80')} alt={item.product_name} className="w-20 h-20 object-cover rounded-lg" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/80?text=No+Image' }} />
               <div className="flex-1 text-center sm:text-left"><h3 className="font-semibold">{item.product_name}</h3><p className="font-medium" style={{color: theme.primary}}>Rs. {item.product_price?.toLocaleString('en-IN')}</p></div>
               <div className="flex items-center gap-2"><Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onUpdateCart(item.id, Math.max(0, item.quantity - 1))}><Minus className="h-4 w-4" /></Button><span className="w-8 text-center font-semibold">{item.quantity}</span><Button variant="outline" size="icon" className="h-8 w-8" onClick={() => onUpdateCart(item.id, item.quantity + 1)}><Plus className="h-4 w-4" /></Button></div>
               <p className="font-bold text-lg">Rs. {(item.product_price * item.quantity).toLocaleString('en-IN')}</p>
@@ -794,8 +812,10 @@ function AdminDashboard({ token, theme }) {
   const addCat = async () => { if(!newCat.trim()) return; try { await api.post('/categories', {name: newCat, brand: newCatBrand}, token); setNewCat(''); toast.success('Added!'); loadData() } catch(e){ toast.error(e.message) } }
   const delCat = async (id) => { if(!confirm('Delete?')) return; try { await api.del(`/categories/${id}`, token); toast.success('Deleted!'); loadData() } catch(e){ toast.error(e.message) } }
 
-  const filteredProducts = products.filter(p => p.brand === adminBrand)
-  const filteredCats = categories.filter(c => c.brand === adminBrand)
+  const safeProducts = Array.isArray(products) ? products : []
+  const safeCategories = Array.isArray(categories) ? categories : []
+  const filteredProducts = safeProducts.filter(p => p?.brand === adminBrand)
+  const filteredCats = safeCategories.filter(c => c?.brand === adminBrand)
   const abTheme = BRAND_CONFIG[adminBrand]
 
   if (loading) return <div className="p-8 text-center">Loading...</div>
@@ -913,14 +933,15 @@ function AboutPage({ theme }) {
 }
 
 // ========== CONTACT ==========
-function ContactPage({ theme }) {
+function ContactPage({ theme, activeBrand }) {
+  const contact = getBrandContact(activeBrand)
   return (
     <div className="animate-fadeIn">
       <div className="py-16" style={{background: theme.heroBg}}><div className="max-w-4xl mx-auto px-4 text-center"><h1 className="text-4xl font-bold text-white mb-4">Contact Us</h1><p style={{color: theme.accent}}>We'd love to hear from you</p></div></div>
       <div className="max-w-2xl mx-auto px-4 py-12">
         <Card><CardContent className="p-8 space-y-6">
-          <div className="flex items-center gap-4 p-4 rounded-xl" style={{background: theme.lightBg}}><div className="rounded-full p-3" style={{background: theme.buttonBg}}><Phone className="h-6 w-6 text-white" /></div><div><h3 className="font-semibold text-lg">Phone / WhatsApp</h3><p className="font-medium text-lg" style={{color: theme.primary}}>{PHONE_NO}</p></div></div>
-          <div className="flex items-center gap-4 p-4 rounded-xl" style={{background: theme.lightBg}}><div className="rounded-full p-3" style={{background: theme.secondary}}><Mail className="h-6 w-6 text-white" /></div><div><h3 className="font-semibold text-lg">Email</h3><p className="font-medium" style={{color: theme.primary}}>afngraphics7867@gmail.com</p></div></div>
+          <div className="flex items-center gap-4 p-4 rounded-xl" style={{background: theme.lightBg}}><div className="rounded-full p-3" style={{background: theme.buttonBg}}><Phone className="h-6 w-6 text-white" /></div><div><h3 className="font-semibold text-lg">Phone / WhatsApp</h3><p className="font-medium text-lg" style={{color: theme.primary}}>{contact.phone}</p></div></div>
+          <div className="flex items-center gap-4 p-4 rounded-xl" style={{background: theme.lightBg}}><div className="rounded-full p-3" style={{background: theme.secondary}}><Mail className="h-6 w-6 text-white" /></div><div><h3 className="font-semibold text-lg">Email</h3><p className="font-medium" style={{color: theme.primary}}>{contact.email}</p></div></div>
           <div className="rounded-2xl p-8 text-center" style={{background: theme.heroBg}}>
             <div className="flex items-center justify-center gap-4 mb-4"><img src={AFN_LOGO} alt="AFN" className="h-12 w-12 rounded-xl object-contain p-1" style={{background:'#fff'}} /><img src={CRAZZY_LOGO} alt="Crazzy" className="h-12 w-12 rounded-xl object-contain p-1" style={{background:'#fff'}} /></div>
             <p className="text-white font-bold text-xl mb-2">AFN GRAPHICS & Crazzy Gifts World</p>
@@ -1031,14 +1052,14 @@ function App() {
       case 'register': return <RegisterPage setCurrentPage={setCurrentPage} onLogin={onLogin} theme={theme} />
       case 'forgot-password': return <ForgotPasswordPage setCurrentPage={setCurrentPage} theme={theme} />
       case 'home': return <HomePage products={products} categories={categories} user={user} token={token} setCurrentPage={setCurrentPage} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} onAddToCart={onAddToCart} viewMode={viewMode} setViewMode={setViewMode} theme={theme} activeBrand={activeBrand} />
-      case 'product-detail': return <ProductDetailPage product={selectedProduct} user={user} viewMode={viewMode} setCurrentPage={setCurrentPage} onAddToCart={onAddToCart} theme={theme} />
+      case 'product-detail': return <ProductDetailPage product={selectedProduct} user={user} viewMode={viewMode} setCurrentPage={setCurrentPage} onAddToCart={onAddToCart} theme={theme} activeBrand={activeBrand} />
       case 'cart': return <CartPage cart={cart} setCurrentPage={setCurrentPage} onUpdateCart={onUpdateCart} onRemoveFromCart={onRemoveFromCart} theme={theme} />
       case 'payment': return <PaymentPage cart={cart} token={token} setCurrentPage={setCurrentPage} setCart={setCart} theme={theme} />
       case 'orders': return <OrdersPage token={token} setCurrentPage={setCurrentPage} theme={theme} />
       case 'admin-login': return <AdminLoginPage setCurrentPage={setCurrentPage} onLogin={onLogin} theme={theme} />
       case 'admin': return user?.role === 'admin' ? <AdminDashboard token={token} theme={theme} /> : <LoginPage setCurrentPage={setCurrentPage} onLogin={onLogin} theme={theme} />
       case 'about': return <AboutPage theme={theme} />
-      case 'contact': return <ContactPage theme={theme} />
+      case 'contact': return <ContactPage theme={theme} activeBrand={activeBrand} />
       default: return <LandingPage products={products} categories={categories} setCurrentPage={setCurrentPage} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} theme={theme} activeBrand={activeBrand} />
     }
   }
