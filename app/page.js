@@ -79,6 +79,20 @@ const BRAND_CONFIG = {
 const AFN_CAT_ICONS = { 'Logo Designing': Palette, 'Banner Design': ImageIcon, 'Visiting Cards': CreditCard, 'Brochures': FileText, 'Bill Books': FileText, 'Employee ID Cards': Shield, 'Lanyard Prints': Tag, 'Labels & Stickers': Layers }
 const CRAZZY_CAT_ICONS = { 'Personalized Mugs': Coffee, 'Custom T-Shirts': Shirt, 'Photo Frames': Frame, 'Keychains': Key, 'Gift Hampers': Gift, 'Mobile Covers': Smartphone, 'Cushion Covers': Armchair, 'Wall Clocks': Clock, 'Personalized Pens': PenTool }
 
+const heroHeadingSlant = {
+  display: 'inline-block',
+  transform: 'skewX(-5deg)',
+  transformOrigin: 'center',
+}
+
+const heroTaglineStrong = {
+  fontFamily: 'Poppins, Montserrat, Inter, system-ui, sans-serif',
+  fontWeight: 700,
+  color: '#5eead4',
+  letterSpacing: '0.03em',
+  textShadow: '0 2px 10px rgba(0,0,0,0.8)',
+}
+
 const api = {
   get: async (url, token) => {
     const res = await fetch(`/api${url}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
@@ -321,15 +335,15 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
       {activeBrand === 'afn_graphics' ? (
         <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
           <div className="absolute inset-0" style={{backgroundImage: `url("${AFN_HERO_BG}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} />
-          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%)'}} />
+          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.75) 100%)'}} />
+          <div className="absolute inset-0" style={{background: 'linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(13,21,54,0.60) 100%)'}} />
           <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <div className="text-center">
               <img src={AFN_LOGO} alt="AFN Graphics" className="h-24 w-24 md:h-32 md:w-32 mx-auto mb-6 rounded-2xl object-contain p-2 animate-pulse-glow" style={{background: '#fff', border: '2px solid rgba(233,30,140,0.5)', boxShadow: '0 0 30px rgba(233,30,140,0.3)'}} />
-              <h1 className="text-5xl md:text-7xl lg:text-8xl mb-3" style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic', fontWeight: 800, letterSpacing: '2px'}}>
-                <span style={{color: '#e91e8c', textShadow: '0 0 60px rgba(233,30,140,0.5), 0 4px 15px rgba(0,0,0,0.7), 2px 2px 0 rgba(124,58,237,0.4)'}}>AFN </span>
-                <span className="text-white" style={{textShadow: '0 0 30px rgba(255,255,255,0.25), 0 4px 15px rgba(0,0,0,0.7), 2px 2px 0 rgba(233,30,140,0.3)'}}>Graphics</span>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl mb-4 font-extrabold leading-tight" style={{...heroHeadingSlant, fontFamily: 'Poppins, Montserrat, Inter, system-ui, sans-serif', color: '#ffffff', letterSpacing: '-0.03em', textShadow: '0 8px 24px rgba(0,0,0,0.55), 0 0 12px rgba(0,0,0,0.25)', WebkitTextStroke: '0.5px rgba(0,0,0,0.2)'}}>
+                AFN Graphics
               </h1>
-              <p className="text-xl md:text-2xl mb-3 tracking-[0.25em] uppercase" style={{color: '#c084fc', textShadow: '0 2px 10px rgba(0,0,0,0.8)', fontWeight: 300, letterSpacing: '0.25em'}}>a unique designing solutions</p>
+              <p className="text-2xl md:text-3xl mb-3 uppercase font-semibold" style={{color: '#f8c2d8', fontFamily: 'Poppins, Montserrat, Inter, system-ui, sans-serif', letterSpacing: '0.06em', textShadow: '0 2px 12px rgba(0,0,0,0.35)'}}>a unique designing solutions</p>
               <p className="text-2xl md:text-3xl font-bold mb-10" style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic', color: '#f9a8d4', textShadow: '0 2px 15px rgba(0,0,0,0.8)'}}>\"You Dream it... We Design it...!!!\"</p>
               <div className="max-w-xl mx-auto relative mb-8">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -346,7 +360,8 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
         /* Crazzy Gifts World Hero - vibrant 3D */
         <div className="relative overflow-hidden min-h-[520px] md:min-h-[600px] flex items-center">
           <div className="absolute inset-0" style={{backgroundImage: `url("${CRAZZY_HERO_BG}")`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}} />
-          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.72) 100%)'}} />
+          <div className="absolute inset-0" style={{background: 'linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.70) 100%)'}} />
+          <div className="absolute inset-0" style={{background: 'linear-gradient(180deg, rgba(0,0,0,0.40) 0%, rgba(7,44,44,0.58) 100%)'}} />
           {/* Animated gradient blobs */}
           <div className="absolute inset-0" style={{background: 'radial-gradient(circle 600px at 25% 40%, rgba(13,148,136,0.25) 0%, transparent 70%), radial-gradient(circle 500px at 75% 60%, rgba(45,212,191,0.2) 0%, transparent 70%), radial-gradient(circle 400px at 50% 20%, rgba(94,234,212,0.1) 0%, transparent 70%)'}} />
           {/* Sparkle dots */}
@@ -364,20 +379,16 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
           <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
             <div className="text-center">
               <img src={CRAZZY_LOGO} alt="Crazzy Gifts" className="h-28 w-28 md:h-36 md:w-36 mx-auto mb-8 rounded-2xl object-contain p-2 animate-pulse-glow" style={{background: '#fff', border: '2px solid rgba(45,212,191,0.4)', boxShadow: '0 0 40px rgba(45,212,191,0.3), 0 0 80px rgba(45,212,191,0.1)'}} />
-              <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-1 leading-none" style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic'}}>
-                <span style={{color: '#2dd4bf', textShadow: '0 0 80px rgba(45,212,191,0.5), 0 5px 0 #0a5c52, 0 10px 0 #064e45, 0 15px 30px rgba(0,0,0,0.9)'}}>Crazzy</span>
-              </h1>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-1 leading-none" style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic'}}>
-                <span style={{color: '#5eead4', textShadow: '0 0 60px rgba(94,234,212,0.4), 0 4px 0 #0d7a6f, 0 8px 0 #065f55, 0 12px 25px rgba(0,0,0,0.9)'}}>Gifts </span>
-                <span style={{color: '#99f6e4', textShadow: '0 0 50px rgba(153,246,228,0.3), 0 4px 0 #0d9488, 0 8px 20px rgba(0,0,0,0.9)'}}>World</span>
-              </h1>
+              <div className="space-y-2">
+                <h1 className="text-6xl md:text-7xl lg:text-8xl font-extrabold leading-tight" style={{...heroHeadingSlant, fontFamily: 'Poppins, Montserrat, Inter, system-ui, sans-serif', color: '#ffffff', textShadow: '0 5px 20px rgba(0,0,0,0.55), 0 0 15px rgba(255,255,255,0.18), 0 0 1px rgba(0,0,0,0.35)', WebkitTextStroke: '0.8px rgba(0,0,0,0.3)'}}>Crazzy Gifts World</h1>
+              </div>
               {/* Decorative line */}
               <div className="flex items-center justify-center gap-3 my-5">
                 <div className="h-[1px] w-16 md:w-24" style={{background: 'linear-gradient(to right, transparent, #2dd4bf)'}} />
                 <Gift className="h-5 w-5" style={{color: '#2dd4bf', filter: 'drop-shadow(0 0 6px rgba(45,212,191,0.5))'}} />
                 <div className="h-[1px] w-16 md:w-24" style={{background: 'linear-gradient(to left, transparent, #2dd4bf)'}} />
               </div>
-              <p className="text-lg md:text-xl mb-6 tracking-[0.2em] uppercase font-light" style={{color: '#5eead4', textShadow: '0 2px 10px rgba(0,0,0,0.8)'}}>A Complete Online Gift Solutions...</p>
+              <p className="text-2xl md:text-3xl mb-6 tracking-[0.2em] uppercase" style={heroTaglineStrong}>A Complete Online Gift Solutions...</p>
               <div className="mb-10 space-y-1">
                 <p className="text-xl md:text-2xl" style={{color: '#ccfbf1', textShadow: '0 2px 8px rgba(0,0,0,0.8)', fontWeight: 500}}>
                   Ordinary <span className="text-4xl md:text-5xl font-black" style={{fontFamily: 'Playfair Display, serif', fontStyle: 'italic', color: '#2dd4bf', textShadow: '0 0 30px rgba(45,212,191,0.5), 0 4px 0 #064e45, 0 8px 20px rgba(0,0,0,0.8)'}}>GIFT</span> to
