@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+import connectDB from '../../../lib/mongoose'
 import { v4 as uuidv4 } from 'uuid'
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
@@ -6,8 +6,6 @@ import jwt from 'jsonwebtoken'
 import { v2 as cloudinary } from 'cloudinary'
 import nodemailer from 'nodemailer'
 
-let client
-let db
 let mongoAvailable = true
 
 const DUMMY_CATEGORIES = [
@@ -52,18 +50,15 @@ const DUMMY_PRODUCTS = [
 
 async function connectToMongo() {
   if (!mongoAvailable) return null
-  if (!client) {
-    try {
-      client = new MongoClient(process.env.MONGO_URL)
-      await client.connect()
-      db = client.db(process.env.DB_NAME)
-    } catch (error) {
-      mongoAvailable = false
-      console.error('MongoDB connection failed:', error.message)
-      return null
-    }
+
+  try {
+    const db = await connectDB()
+    return db
+  } catch (error) {
+    mongoAvailable = false
+    console.error('MongoDB connection failed:', error.message)
+    return null
   }
-  return db
 }
 
 cloudinary.config({

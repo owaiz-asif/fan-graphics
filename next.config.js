@@ -6,7 +6,7 @@ const nextConfig = {
     unoptimized: true,
   },
 
-  serverExternalPackages: ['mongodb'],
+  serverExternalPackages: ['mongoose'],
 
   // REMOVE webpack completely ❌
 
