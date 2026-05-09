@@ -410,6 +410,27 @@ function LandingPage({ products, categories, setCurrentPage, searchQuery, setSea
         </div>
       )}
 
+      <div className="max-w-4xl mx-auto px-4 text-center py-12">
+        <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
+          AFN Graphics delivers professional graphic design, branding, custom gifts, posters and creative solutions for businesses and individuals.
+        </h2>
+        <p className="max-w-3xl mx-auto text-white/80 text-base md:text-lg leading-relaxed">
+          Discover premium branding, print design, advertising posters, and custom gift options from AFN Graphics crafted to elevate your visual identity.
+        </p>
+      </div>
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'AFN Graphics',
+          url: 'https://afn-graphics.vercel.app',
+          logo: 'https://afn-graphics.vercel.app/afn-logo.png',
+          sameAs: ['https://afn-graphics.vercel.app'],
+          description: 'AFN Graphics delivers professional graphic design, branding, custom gifts, posters and creative solutions for businesses and individuals.'
+        })
+      }} />
+
       {/* Horizontal Category Nav */}
       <div className="border-b" style={{borderColor: theme.lightBorder, background: theme.lightBg}}>
         <div className="max-w-7xl mx-auto px-4">
